@@ -1,0 +1,299 @@
+[
+ {
+  "rank": 1,
+  "name": "proxy_correctness_history",
+  "feature_or_method": "feature: derived per-attempt correctness sequence with recency/streak/two-count stats",
+  "how_to_compute": "Walk turns in timestamp order. For each student turn that answers a preceding tutor question, read the immediately-following tutor turn: label the answer 1 if it matches a confirm/advance lexicon (yes|right|correct|exactly|good|perfect|great|nice, OR it poses a NEW question with low content-word overlap to the prior question) and 0 if it matches a correction lexicon (no|not quite|almost|actually|close but|let'?s try|that'?s not|remember, OR it re-asks the same question detected by high content-word overlap). Skip turns matching neither. From the ordered 0/1 sequence emit: last label; trailing correct-run and incorrect-run length; cumulative accuracy; accuracy over the last k=3-5 labeled answers and over the last quarter; exp-decay-weighted correct and incorrect sums (weight=decay^answers-ago, decay 0.6-0.9); and two separate PFA counts (cumulative #correct, #incorrect) with their difference and ratio.",
+  "expected_value": "high",
+  "effort": "structural",
+  "rationale": "The current set encodes zero per-answer correctness; recent-performance is the strongest classical KT predictor and the tutor's reaction is a cheap, tutor-agnostic observation of it. Consensus 'single strongest available signal' across ~8 corpus ideas."
+ },
+ {
+  "rank": 2,
+  "name": "concept_recency_lag",
+  "feature_or_method": "feature: forgetting/spacing lag on the assessed concept",
+  "how_to_compute": "Tokenize the upcoming question stem (or its stated learning-objective text) into lemmatized, stopword-stripped content terms. Scan backward through prior turns for the most-recent turn whose content overlaps those terms (stemmed Jaccard or TF-IDF cosine above ~0.2). Emit: (a) elapsed seconds between that turn and the last transcript turn (timestamps); (b) number of intervening turns; (c) total prior turns that touched the concept, split student-side vs tutor-side (practice/spacing count); (d) a binary 'cold' flag if the concept never appeared; (e) proxy-correctness label of the student attempt inside the most-recent matching segment (resolved vs unresolved).",
+  "expected_value": "high",
+  "effort": "structural",
+  "rationale": "All existing timing features are global (duration, generic gaps); anchoring lag to the target KC is a standard KT covariate, strongly tutor-agnostic, and flagged as the single strongest genuinely-new signal in its cluster."
+ },
+ {
+  "rank": 3,
+  "name": "upcoming_question_content_coverage",
+  "feature_or_method": "feature: preparedness = did the session cover the assessed content",
+  "how_to_compute": "Extract content terms/keyphrases from the upcoming question (lemmatized, stopword-removed). Coverage = fraction appearing anywhere in the transcript; also a student-attributed version (fraction in the union of STUDENT turns) and a last-quarter-weighted version. Add TF-IDF cosine between the question vector and (i) the whole transcript and (ii) student-only text; max/mean cosine of the question to individual prior turns; count of prior turns above a similarity threshold (how often it came up) and total on-topic student word count (an evidence / cold-start gate scalar).",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Direct scalar coverage of the exact next item (distinct from learning-objective TF-IDF classifiers, which target stated objectives). Cold-start gate also lets the model down-weight noisy behavioral aggregates when the concept was barely touched."
+ },
+ {
+  "rank": 4,
+  "name": "upcoming_question_difficulty_proxy",
+  "feature_or_method": "feature: item-side text-complexity difficulty scalar",
+  "how_to_compute": "From the next question's text compute: token count; words-per-sentence; mean word length / syllables-per-word (Flesch-Kincaid); symbolic density = (digits + math operators + equation-like tokens) per 100 words; count of multi-step cue words (then|next|after|therefore|if|per); number of sub-parts; and rare-word ratio = share of tokens outside a common-word frequency list (or with low corpus TF). Combine into one z-scored difficulty scalar (higher -> lower P(correct)).",
+  "expected_value": "medium",
+  "effort": "lexical",
+  "rationale": "Near-noise correctness is largely mastery x item-difficulty; item difficulty is a theory-required covariate the current all-transcript-side set lacks entirely, and it is fully tutor-agnostic (depends only on the item)."
+ },
+ {
+  "rank": 5,
+  "name": "telling_vs_eliciting_and_answer_leakage",
+  "feature_or_method": "feature: tutor telling share + answer-leakage flag",
+  "how_to_compute": "Classify each tutor turn: telling = declarative/imperative answer or full-procedure statement (the answer is|it'?s|you get|so it equals|= <value>|multiply then...) with no '?'; eliciting = contains a question aimed at the student. Emit telling/(telling+eliciting) overall and last-quarter. Leakage flag = 1 if any tutor turn states the final answer/value for the assessed concept before the assessment item (match the question's expected-answer tokens or a '= value' in a tutor turn on the target concept).",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Telling inflates next-correct without learning and is a first-order confound on the label itself; also a tutor-agnostic pedagogy axis absent from the current elicit/revoice/press moves."
+ },
+ {
+  "rank": 6,
+  "name": "unresolved_struggle_streak",
+  "feature_or_method": "feature: per-episode trailing error run + wheel-spin recurrence",
+  "how_to_compute": "Segment into problem episodes at new-problem cues (tutor turn with next/new problem|let'?s try|okay so, or a topic shift = low content-word overlap with the prior 3 turns). Within the final episode(s), using proxy-correctness labels, compute the length of the trailing run of consecutive student answers labeled incorrect with no intervening correct (and its max in the episode). Add a wheel-spin count = number of tutor question/explanation turns whose content-word set repeats an earlier tutor turn's set above threshold, and the longest run dwelling on one recurring content cluster.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Per-episode, streak-structured negative signal right before assessment; distinct from the global proxy streak because it isolates being stuck on the current problem."
+ },
+ {
+  "rank": 7,
+  "name": "feedback_level_composition",
+  "feature_or_method": "feature: Hattie four-level feedback share",
+  "how_to_compute": "Classify each tutor turn by lexicon into: task/product (correct|the answer is|that'?s wrong); process/strategy (the strategy|try thinking about|the reason is|method|notice that|break it into|because); self-regulation (how did you decide|check your work|are you sure|how do you know|what would you do next); person/praise (good job|smart|well done|good girl/boy). Emit share per level; high-information share = (process+self-reg)/all-feedback turns; person-praise share (expected negative sign).",
+  "expected_value": "medium",
+  "effort": "lexical",
+  "rationale": "Process+self-regulation feedback carries by far the largest learning effect (d~0.99) while person-praise is least effective; current praise/corrective keywords do not separate these levels. Cheap and transfers."
+ },
+ {
+  "rank": 8,
+  "name": "post_error_feedback_quality",
+  "feature_or_method": "feature: elaboration + pinpoint + actionability of corrections",
+  "how_to_compute": "For tutor turn(s) immediately after a proxy-incorrect student answer compute: word count (elaboration length); explanation connective present (because|so|which means|the reason); worked-example pattern (>=2 step markers / first...then / enumerated steps); pinpoint = repeats >=1 content token from the student's wrong turn + a correction marker; actionable = directive/next-step cue (try|instead|first|now|start by|imperative verb). Feature = fraction of post-error tutor turns that are elaborated, and the fraction that are BOTH pinpointed AND actionable, vs bare verification.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Elaborated, error-located, actionable feedback drives correction far more than bare 'try again'; richer than corrective-keyword presence and tutor-agnostic."
+ },
+ {
+  "rank": 9,
+  "name": "person_vs_task_praise_ratio",
+  "feature_or_method": "feature: ego-directed vs task/process praise direction",
+  "how_to_compute": "Within tutor praise turns, split person/ego-directed (praise token + 2nd-person pronoun / trait adjective, no task referent: you're smart|good boy|you're great) from task/process-directed (praise tied to a specific step, answer, or reason). Feature = person/(person+task) ratio, overall and last quarter.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Person-directed praise is a plausible NEGATIVE predictor (FIT: ~1/3 of feedback hurts, especially self/ego-directed); the sign asymmetry is lost by an undifferentiated praise count."
+ },
+ {
+  "rank": 10,
+  "name": "tutor_contingency",
+  "feature_or_method": "feature/method: adaptivity of tutor moves to student state",
+  "how_to_compute": "Using proxy-correctness labels: (a) support_after_error - support_after_success, where support = tutor-turn length + count of scaffolding/hint markers on the following tutor turn; (b) P(next tutor turn corrective/scaffolding | prev student proxy-wrong) - P(same | proxy-correct); (c) rate the tutor changes move type after an error; (d) uncertainty-contingent expansion = mean tutor-run length after hedged student turns (maybe|not sure|I think|I guess|?) minus after non-hedged. Large positive = adaptive/contingent.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Contingency (support up after difficulty, down after success) is the behavioral signature of effective tutoring; an interaction not expressible as any single per-turn count, and tutor-agnostic."
+ },
+ {
+  "rank": 11,
+  "name": "move_by_mastery_interactions",
+  "feature_or_method": "method: interaction/cross-product terms",
+  "how_to_compute": "Set proxy_mastery = running share of proxy-correct attempts up to each point. Build interaction features: press_density x proxy_mastery, revoice_density x (1-proxy_mastery), revoice x press; early_ability x each discourse-move density (early_ability = proxy-correct rate + self-explanation-connective density + inverse uncertainty rate over first ~25% of turns); elaboration_density x student_participation (student words or turns / total). Feed to logistic/GBM (trees capture some via early_ability splits).",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Multiple sources report the predictive signal lives in move x student-state interactions, not raw counts (one reports AUC ~0.63/0.66 -> 0.77 after adding a performance-proxy interaction). Reuses existing move detectors."
+ },
+ {
+  "rank": 12,
+  "name": "feedback_delay",
+  "feature_or_method": "feature: error-to-feedback and post-answer timing",
+  "how_to_compute": "For each student answer turn, measure intervening turns AND elapsed seconds until the next tutor turn carrying evaluative/corrective content. Aggregate mean/median overall and restricted to proxy-incorrect (error) turns. Keep WT1 (tutor-question -> student-reply latency) and WT2 (student-answer -> next tutor turn) as separate directional timing features; add fraction of tutor questions answered after >3s.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Feedback immediacy after an error is the pedagogically-relevant latency (distinct from generic response latency), a known ITS moderator, and computed purely from timestamps + lexicons."
+ },
+ {
+  "rank": 13,
+  "name": "student_initiative_and_novelty",
+  "feature_or_method": "feature: who drives the dialogue / new-content generation",
+  "how_to_compute": "For each student turn label 'initiating' if it opens with a question, introduces on-topic content words absent from the immediately preceding N tutor turns (novelty ratio = new content tokens / total student content tokens), or shifts topic; else 'responsive' (high overlap, bare answer). Emit initiating fraction, mean novelty ratio (overall + last quarter), count of initiative hand-offs (adjacent turns where the party introducing new content switches), and student-origination ratio = fraction of the session's top TF-IDF terms first uttered by the student vs tutor.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Knowledge-building (generating new propositions) vs knowledge-telling predicts outcomes over prior knowledge; reverse direction of the current tutor->student uptake feature and distinct from ICAP connectives."
+ },
+ {
+  "rank": 14,
+  "name": "confusion_resolution_and_monitoring_shift",
+  "feature_or_method": "feature: resolved vs persistent confusion + valence shift",
+  "how_to_compute": "Detect confusion onset in student turns (confused|don'?t get/understand|lost|huh|repeated hedges|'?'). Mark RESOLVED if within K turns a student turn is proxy-correct or positive-monitoring (oh i see|got it|makes sense|that'?s why); PERSISTENT if followed within K by more confusion/frustration markers or a run of <=3-word low-content turns. Emit resolved-count, persistent-count, ratio; plus monitoring valence shift = (positive-monitoring rate in last third) - (negative-monitoring rate in first third) and count of adjacent negative->positive transitions.",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Resolved (regulated) confusion predicts learning while persistent confusion decays to frustration; current uncertainty markers capture presence but not whether an episode closes."
+ },
+ {
+  "rank": 15,
+  "name": "student_self_correction_markers",
+  "feature_or_method": "feature: self-initiated repair / metacognitive control",
+  "how_to_compute": "Regex over student turns for self-initiated repair/monitoring: wait|no wait|actually|I mean|let me redo/recheck/try again|I made a mistake|oh I see|that'?s not right|scratch that. Require the prior turn to be the student's or a neutral tutor turn (not a tutor correction) so the revision is self-initiated. Feature = count/rate and a last-quarter presence flag.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Internally-generated feedback (self-monitoring, spontaneous revision) is an SRL marker distinct from reasoning connectives and hedges; cheap and tutor-agnostic."
+ },
+ {
+  "rank": 16,
+  "name": "help_seeking_and_formative_initiation",
+  "feature_or_method": "feature: help-seeking type + who initiates checks",
+  "how_to_compute": "Executive help cues in student turns (just tell me|what'?s the answer|give me the answer|I give up|can you just do it) vs instrumental (why|how do i|can you explain|I don'?t understand why|what does...mean|how come). Emit executive/(executive+instrumental), instrumental count, and a help-avoidance flag (>=k proxy-incorrect with zero help requests). Add student-initiated formative-check ratio = student turns requesting evaluation (is this right?|did I get it?|does that make sense?) / all formative-check turns.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Executive/help-avoidant patterns are metacognitive negatives, instrumental positive; student-initiated checks carry a larger effect than tutor-initiated ones. Not captured by raw question frequency."
+ },
+ {
+  "rank": 17,
+  "name": "rapid_guess_bursts",
+  "feature_or_method": "feature: gaming / disengaged guessing detector",
+  "how_to_compute": "Flag a student answer turn glib-fast if response latency (timestamp delta from the prior tutor turn) is below the student's own session median AND the turn has <=3 content words AND contains no reasoning connective (because|so|if|since). Emit fraction glib-fast and the max run length of consecutive glib-fast turns.",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Systematic rapid guessing depresses next-correct regardless of content; the conjunction of short latency AND short reasoning-free answers is more specific than either signal alone."
+ },
+ {
+  "rank": 18,
+  "name": "student_disfluency_density",
+  "feature_or_method": "feature: production-breakdown lexical channel",
+  "how_to_compute": "Regex over student turns for filled pauses (\\bu[mh]+\\b, \\ber+\\b, hmm), immediate word repetitions (\\b(\\w+)\\s+\\1\\b), self-repair (I mean|no wait|or rather|--), trailing/incomplete utterances (ends with ... or a dangling conjunction), and single-word fragments. Normalize by student word count; also take the max over last-quarter turns.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Disfluency is a distinct textual channel of processing difficulty (production breakdown) separate from the existing hedging/uncertainty lexicon (epistemic stance); trivially cheap."
+ },
+ {
+  "rank": 19,
+  "name": "affect_valence_trajectory",
+  "feature_or_method": "feature: student affect slope over the session",
+  "how_to_compute": "Score each student turn valence = positive markers (got it|makes sense|oh nice|I see) minus frustration/negative markers (ugh|this is hard|stuck|confusing|give up|whatever|I'?m lost). Emit net valence overall, in the last quarter, and the first-half->second-half slope.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "A recovering trajectory (resolved negative affect) can precede success while a deteriorating one predicts failure; the trend often matters more than the level. Cheap, tutor-agnostic."
+ },
+ {
+  "rank": 20,
+  "name": "move_transition_and_act_entropy",
+  "feature_or_method": "feature: adjacent-move bigrams + dialogue-act diversity",
+  "how_to_compute": "Tag each turn with a coarse move/act via lexical+punctuation rules (question='?', tell, revoice/restate, praise, correct, backchannel, directive). Emit normalized adjacent-move bigram frequencies over the tutor subsequence (correct->elicit, correct->tell, elicit->tell, press->revoice), tutor->student and student->tutor transition rates, and the Shannon entropy of the act distribution separately for tutor and student turns. Optionally restrict bigrams to the last-k-turn pre-item window.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Move ORDER carries signal beyond counts (correct->re-elicit is productive; correct->tell is give-up); entropy indexes genuine interactivity vs monotone Q/A drill."
+ },
+ {
+  "rank": 21,
+  "name": "question_cognitive_level",
+  "feature_or_method": "feature: higher-order / authentic question share",
+  "how_to_compute": "Classify each interrogative turn: higher-order/authentic (why|how|explain|justify|what if|compare|predict|what do you think|how could|why might) vs recall/closed (what is|when|who|define|yes-no auxiliary openers|how many). Emit higher-order/total and authentic/total, computed separately for tutor and student; also student deep-question count = deep cue co-occurring with domain content.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Question cognitive LEVEL (not frequency) relates to achievement; current features count questions but not their demand. Cheap lexical split, transfers across tutors."
+ },
+ {
+  "rank": 22,
+  "name": "question_chain_and_step_granularity",
+  "feature_or_method": "feature: Socratic chain depth + step decomposition",
+  "how_to_compute": "Find runs of tutor question turns separated only by short student responses within one episode -> mean/max tutor question-chain length and count of chains >=2 ending in a proxy-correct. Step-granularity index = fraction of tutor turns with step/sequence markers (first|next|then|step|now|let'?s break this|numbered sub-parts) AND short alternating back-and-forth (turn length below session median); plus mean student turns per tutor problem-segment (segment = span between two tutor question turns).",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Gains come from step-level, decomposed exchanges (VanLehn interaction plateau); chain depth and step-structuring index guided reasoning beyond raw question counts."
+ },
+ {
+  "rank": 23,
+  "name": "student_content_density_and_grounding",
+  "feature_or_method": "feature: on-task substance, specificity, evidence-grounding",
+  "how_to_compute": "Per student turn: content density = (domain/content tokens: numerals, operation words, learning-objective vocab, contentful nouns/verbs - backchannel/filler ok|um|yeah|idk|hmm) / total tokens. Specificity = numerals + technical/quoted tokens - vagueness markers (kind of|sort of|it/that/thing/stuff). Evidence-grounding flag = cites numerals/units, a rule/definition name, or a prior result. Emit content-vs-procedural share, mean specificity, evidence-grounded fraction; overall and last quarter.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Domain-substantive, specific, evidence-grounded student talk indexes engaged processing and operating on the actual content, distinct from raw word counts and the confidence-only uncertainty lexicon."
+ },
+ {
+  "rank": 24,
+  "name": "complete_argument_and_challenge_justify",
+  "feature_or_method": "feature: claim+warrant and justified challenges",
+  "how_to_compute": "Count student turns with claim+warrant co-occurrence (a declarative answer clause AND a justification clause because|so|therefore|which means|that'?s why in the SAME turn). Separately count challenge+justify turns (challenge cue but|I don'?t think|wait|actually|isn'?t it|no because co-occurring with a reasoning connective) and bare cumulative-agreement turns (yeah/ok/right with no content). Normalize by student turns.",
+  "expected_value": "low",
+  "effort": "lexical",
+  "rationale": "Warranted claims and justified challenges (exploratory talk) reflect deeper reasoning than a bare connective; requires claim+warrant TOGETHER, distinct from the existing connective count."
+ },
+ {
+  "rank": 25,
+  "name": "multi_turn_coherence",
+  "feature_or_method": "feature: cumulative cross-turn thematic chaining",
+  "how_to_compute": "For each turn t compute content-lemma Jaccard between t and the union of turns t-1..t-3 (stopwords removed); average across the session and take its first->second-half trend. Count runs of >=4 consecutive turns sharing >=1 content lemma (thematic chains).",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Coherent chaining across several turns (cumulation) marks a productive session, extending beyond the existing adjacent tutor->student lexical-overlap uptake feature."
+ },
+ {
+  "rank": 26,
+  "name": "worked_example_and_generation_first",
+  "feature_or_method": "feature: worked-example vs attempt ordering",
+  "how_to_compute": "Flag tutor worked-example turns (long, >=2 sequence markers + a result, no preceding student attempt on that content). Flag student independent-attempt turns (multi-token solution before any tutor demonstration on TF-IDF-matched content). Emit worked-example:independent-attempt ratio, example-first fraction, and generation-before-reveal rate = fraction of sub-problems where the first substantive student attempt precedes the tutor's reveal. Optionally interact with the early-ability proxy.",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Example-first helps novices (cognitive load) while attempting-before-being-told aids retention (generation effect); the mix is a load-management/desirable-difficulty confound on next-correct."
+ },
+ {
+  "rank": 27,
+  "name": "interactive_coconstruction",
+  "feature_or_method": "feature: ICAP Interactive mode + highest mode reached",
+  "how_to_compute": "Tag a student turn Interactive if it (a) has high lexical overlap with the immediately-preceding tutor turn (uptake) AND (b) adds new content words not in that tutor turn AND (c) contains generative connectives (so|because|that means|which is why). Count bidirectional build-on chains (student adds on tutor, then the next tutor turn builds back on the student's addition) and record the highest ICAP mode reached (Passive<Active<Constructive<Interactive) as an ordinal.",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Interactive co-construction is theoretically the strongest ICAP tier and is not captured by an existing constructive-vs-passive contrast; the highest-mode ordinal is additive."
+ },
+ {
+  "rank": 28,
+  "name": "within_session_and_cohort_normalization",
+  "feature_or_method": "method: tutor-invariant rescaling of every feature",
+  "how_to_compute": "For every count/rate feature add: its within-session z-score or rank; its student:tutor ratio form (so absolute chattiness cancels); and its cohort percentile-rank across the training-set session distribution. Z-score response latencies within session per student and add time-per-content-word. Optionally cluster sessions (k-means on the feature vector) and add a soft cluster-membership feature.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Directly serves the transfer/tutor-agnosticism objective: removes a tutor's verbosity/style baseline and session-length scale, multiplying the value of every other lexical/timing feature; nearly free to add."
+ },
+ {
+  "rank": 29,
+  "name": "bkt_running_mastery_filter",
+  "feature_or_method": "feature: smoothed latent mastery over proxy observations",
+  "how_to_compute": "Cluster answer contexts into a few 'skills' by TF-IDF of learning-objective terms. Run a fixed-parameter 2-state BKT/HMM (learn/guess/slip ~0.3/0.2/0.1) over each skill's proxy-correctness sequence (from rank 1). Emit P(mastery) of the skill nearest the upcoming question, plus mean, last value, slope, and last-quartile mean of mastery across skills.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "Yields a smoothed latent state cleaner than raw keyword counts and explicitly encodes the guess/slip near-noise floor; overlaps the proxy sequence but is a distinct, useful functional form."
+ },
+ {
+  "rank": 30,
+  "name": "leakage_safe_prefix_and_grouped_cv",
+  "feature_or_method": "method: near-noise evaluation/calibration discipline",
+  "how_to_compute": "Build every feature for predicting item t from a strict prefix (turns strictly before the assessment) and audit that no feature reads the answer turn or later turns. Evaluate with GroupKFold on session/student id (all-in-one, not one-by-one) so no turns from a session appear in both train and test. Add temperature-scaled probability calibration, an abstain threshold near the base rate, and strong L1/L2 shrinkage (prior scale set from the known small ~0.15-0.2 SD discourse effect) on weak discourse coefficients.",
+  "expected_value": "medium",
+  "effort": "structural",
+  "rationale": "On a near-noise target this is the difference between real signal and an inflated artifact (naive one-by-one KT eval leaks future info); a prerequisite for trusting any reported AUC."
+ },
+ {
+  "rank": 31,
+  "name": "exp_decay_recency_and_reliability_gate",
+  "feature_or_method": "method: soft recency kernels + feature-trust gating",
+  "how_to_compute": "For any per-turn scalar x_i (uncertainty, affirmation, latency, valence) compute a soft decayed aggregate sum(w_i*x_i)/sum(w_i) with w_i=exp(-lambda*(t_last - t_i)) using timestamp seconds, plus a turn-distance variant; sweep 2-3 lambda values as separate features (replacing the hard last-quarter cutoff). Add reliability_index = 1 - share of student turns with <3 content tokens / high filler ratio, used standalone AND as a multiplicative gate that down-weights higher-inference discourse features (argument, specificity, discourse-relation).",
+  "expected_value": "low",
+  "effort": "structural",
+  "rationale": "Continuous recency weighting beats an arbitrary window boundary; the reliability gate stops a near-noise model over-trusting features computed on too-short/noisy student turns."
+ },
+ {
+  "rank": 32,
+  "name": "sbert_semantic_embeddings",
+  "feature_or_method": "feature: dense turn/question embeddings + semantic uptake",
+  "how_to_compute": "Embed each turn with a frozen sentence encoder; aggregate the last-k student turns and (separately) tutor turns by element-wise mean/std/min/max pooling into a fixed vector appended to the handcrafted features. Semantic-uptake = mean cosine(tutor turn, adjacent student turn). Also embed the upcoming question and add its cosine to the session-mean embedding as an item feature.",
+  "expected_value": "medium",
+  "effort": "sequence-model",
+  "rationale": "Captures paraphrase/semantics that bag-of-words TF-IDF misses and enables a semantic (not merely lexical) uptake measure; label-free but heavier, and on a small dataset risks overfitting so use with regularization."
+ },
+ {
+  "rank": 33,
+  "name": "llm_simulated_student_and_rubric",
+  "feature_or_method": "feature: frozen-LLM estimate of the target + rubric/summary",
+  "how_to_compute": "Prompt a frozen instruction-tuned LLM with the role-tagged transcript prefix plus the upcoming question, asking it to role-play the student and emit either an answer or a calibrated P(correct); read the probability or the logprob of the 'correct' token and use it directly or ensemble with the tabular model. Optionally add zero-shot rubric scores (reasoning depth, coherence; keep only dimensions with high reported human agreement) and a natural-language knowledge-state/misconception summary encoded or reduced to boolean flags.",
+  "expected_value": "high",
+  "effort": "llm",
+  "rationale": "Directly approximates the exact target and is tutor-agnostic, so likely the strongest single signal in raw value; ranked here (not top) because heavy effort, calibration needs, and documented unreliability on messy transcripts violate the cheap-and-immediate objective."
+ }
+]

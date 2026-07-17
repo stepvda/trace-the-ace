@@ -1,0 +1,23 @@
+Provenance of downloaded literature (all open-access). Retrieved 2026-07-07.
+
+mathdial_tutoring_dialogue_dataset.pdf          https://arxiv.org/abs/2305.14536   (MathDial; data github.com/eth-nlped/mathdial, CC-BY-SA)
+eedi_neurips2020_diagnostic_questions.pdf       https://arxiv.org/abs/2104.04034
+convolearn_constructivist_dialogue_dataset.pdf  https://arxiv.org/abs/2601.08950
+foundational_assist_knowledge_tracing.pdf       https://arxiv.org/abs/2602.00070
+talkmoves_dataset_k12_math_discursive_moves.pdf https://arxiv.org/abs/2204.09652   (data github.com/SumnerLab/TalkMoves)
+talk_moves_analysis_math_tutoring.pdf           https://arxiv.org/abs/2412.13395
+educoder_annotation_system.pdf                  https://arxiv.org/abs/2507.05385
+chi_wylie_2014_icap_framework.pdf               https://education.asu.edu/sites/g/files/litvpz656/files/lcl/chiwylie2014icap_2.pdf
+correct_answer_trap_tutor_blindspots.pdf        https://arxiv.org/abs/2605.23925
+deep_knowledge_tracing.pdf                      https://arxiv.org/abs/1506.05908
+attentive_knowledge_tracing_akt.pdf             https://arxiv.org/abs/2007.12324   (code github.com/arghosh/AKT)
+knowledge_tracing_survey.pdf                    https://arxiv.org/abs/2201.06953
+training_llm_tutors_learning_outcomes.pdf       https://arxiv.org/abs/2503.06424
+bea2025_pedagogical_ability_shared_task.pdf     https://arxiv.org/abs/2507.10579
+ai_tutor_evaluation_taxonomy.pdf                https://arxiv.org/abs/2412.09416
+aitutor_evalkit_capabilities.pdf                https://arxiv.org/abs/2512.03688
+sentence_bert_embeddings.pdf                    https://arxiv.org/abs/1908.10084
+
+Cited but NOT redistributed (paywalled):
+VanLehn (2011) The Relative Effectiveness of Human Tutoring, ITS, and Other Tutoring Systems.
+  Educational Psychologist 46(4):197-221. doi:10.1080/00461520.2011.611369

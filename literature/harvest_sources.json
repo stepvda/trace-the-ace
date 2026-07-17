@@ -1,0 +1,1742 @@
+[
+ {
+  "title": "Bloom, B. S. (1984). The 2 Sigma Problem: The Search for Methods of Group Instruction as Effective as One-to-One Tutoring",
+  "url": "https://gwern.net/doc/psychology/1984-bloom.pdf",
+  "type": "paper",
+  "relevance": "Feature: density of formative-check -> correction -> re-test cycles per concept in a transcript as a mastery-orientation proxy; sets the 2-sigma ceiling for tutored signal."
+ },
+ {
+  "title": "VanLehn, K. (2011). The Relative Effectiveness of Human Tutoring, Intelligent Tutoring Systems, and Other Tutoring Systems",
+  "url": "https://www.semanticscholar.org/paper/The-Relative-Effectiveness-of-Human-Tutoring,-and-VanLehn/3b924661db089b3511465ae48e6400e20a1dd232",
+  "type": "review",
+  "relevance": "Modeling: encode interaction granularity (answer- vs step- vs substep-level exchanges) as features; step-level feedback drives most of the gain (interaction plateau)."
+ },
+ {
+  "title": "Nickow, Oreopoulos & Quan (2020). The Impressive Effects of Tutoring on PreK-12 Learning: A Meta-Analysis (NBER w27476)",
+  "url": "https://www.nber.org/system/files/working_papers/w27476/w27476.pdf",
+  "type": "review",
+  "relevance": "Feature: dosage/intensity proxies (turns, session length, on-task frequency) calibrated against the ~0.29-0.30 SD effect prior; strongest moderators = tutor type, frequency, in-school."
+ },
+ {
+  "title": "Kulik & Fletcher (2016). Effectiveness of Intelligent Tutoring Systems: A Meta-Analytic Review",
+  "url": "https://www.ida.org/-/media/feature/publications/w/we/welch-award-2017---effectiveness-of-intelligent-tutoring-systems-a-meta-analytic-review/1-effectivenessits.ashx",
+  "type": "review",
+  "relevance": "Modeling: use identified moderators (feedback immediacy, mastery gating, hint quality) as engineered features; provides expected effect-size priors for regularization."
+ },
+ {
+  "title": "Ma, Adesope, Nesbit & Liu (2014). Intelligent Tutoring Systems and Learning Outcomes: A Meta-Analysis",
+  "url": "https://www.apa.org/pubs/journals/features/edu-a0037123.pdf",
+  "type": "review",
+  "relevance": "Modeling: evidence that ITS ~= individual human tutoring justifies building tutor-agnostic transcript features that generalize across tutoring modality."
+ },
+ {
+  "title": "Do intelligent tutoring systems benefit K-12 students? A meta-analysis and heterogeneity of treatment effects in the U.S. (2025)",
+  "url": "https://arxiv.org/abs/2511.04997",
+  "type": "review",
+  "relevance": "Modeling: heterogeneity-of-treatment-effects framing motivates adding student-subgroup interaction terms to the correctness predictor rather than a single average signal."
+ },
+ {
+  "title": "Chi & Wylie (2014). The ICAP Framework: Linking Cognitive Engagement to Active Learning Outcomes",
+  "url": "https://education.asu.edu/sites/g/files/litvpz656/files/lcl/chiwylie2014icap_2.pdf",
+  "type": "paper",
+  "relevance": "Feature: label each student turn Passive/Active/Constructive/Interactive; a higher constructive+interactive ratio should predict learning and next-item correctness."
+ },
+ {
+  "title": "Chi, De Leeuw, Chiu & LaVancher (1994). Eliciting Self-Explanations Improves Understanding",
+  "url": "https://www.semanticscholar.org/paper/Eliciting-Self-Explanations-Improves-Understanding-Chi-Leeuw/dd869eeb2e13264d47eb0d150d05912b7afd9aba",
+  "type": "paper",
+  "relevance": "Feature: count/length/quality of student-generated self-explanations (beyond bare answers) as a high-value predictor of deep understanding."
+ },
+ {
+  "title": "Wisniewski, Zierer & Hattie (2020). The Power of Feedback Revisited: A Meta-Analysis of Educational Feedback Research",
+  "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.03087/full",
+  "type": "review",
+  "relevance": "Feature: classify tutor feedback by level (task/process/self-regulation) and information content; high-information process feedback predicts larger gains (d~0.48 but heterogeneous)."
+ },
+ {
+  "title": "D'Mello & Graesser. Confusion / Dynamics of Affective States During Complex Learning",
+  "url": "https://home.cs.colorado.edu/~mozer/Teaching/syllabi/TopicsInCognitiveScienceSpring2016/DMelloConfusion-Reprint.pdf",
+  "type": "paper",
+  "relevance": "Feature: detect confusion/frustration/boredom markers and confusion->resolution transitions; resolved (regulated) confusion is the affect that predicts learning."
+ },
+ {
+  "title": "NSW CESE (2017). Cognitive Load Theory: Research That Teachers Really Need to Understand (Sweller worked-example effect)",
+  "url": "https://education.nsw.gov.au/content/dam/main-education/about-us/educational-data/cese/2017-cognitive-load-theory.pdf",
+  "type": "review",
+  "relevance": "Feature: ratio of worked-example study vs unsupported problem-solving turns and example-before-problem sequencing, especially for novice (low-prior) students."
+ },
+ {
+  "title": "Corbett & Anderson (1994). Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge (BKT)",
+  "url": "https://act-r.psy.cmu.edu/wordpress/wp-content/uploads/2012/12/893CorbettAnderson1995.pdf",
+  "type": "paper",
+  "relevance": "Modeling: maintain a latent per-skill mastery probability updated across the session as the core state feeding P(next answer correct)."
+ },
+ {
+  "title": "Piech et al. (2015). Deep Knowledge Tracing",
+  "url": "https://stanford.edu/~cpiech/bio/papers/deepKnowledgeTracing.pdf",
+  "type": "paper",
+  "relevance": "Modeling: RNN/LSTM over the interaction sequence outputting P(next correct) is the direct backbone; extend inputs with transcript-derived features."
+ },
+ {
+  "title": "Abdelrahman, Wang & Nunes (2022). Knowledge Tracing: A Survey",
+  "url": "https://arxiv.org/abs/2201.06953",
+  "type": "review",
+  "relevance": "Modeling: menu of KT architectures and auxiliary features (forgetting, item difficulty, attention) to adapt for a transcript-conditioned next-correct predictor."
+ },
+ {
+  "title": "Galyardt & Goldin (2015). Predicting Performance During Tutoring with Models of Recent Performance",
+  "url": "https://arxiv.org/abs/1501.02732",
+  "type": "paper",
+  "relevance": "Feature: recent-window correctness / streak / recency-weighted features often beat full-history models \u2014 cheap, tutor-agnostic signal for next-item correctness."
+ },
+ {
+  "title": "Decision Tree Modeling of Wheel-Spinning and Productive Persistence in Skill Builders (Beck/Gong lineage, JEDM)",
+  "url": "https://jedm.educationaldatamining.org/index.php/JEDM/article/download/210/88",
+  "type": "paper",
+  "relevance": "Feature: repeated attempts on one skill without three-in-a-row correct (wheel-spinning) as a strong negative predictor of next-correct and future mastery."
+ },
+ {
+  "title": "Baker, Corbett & Koedinger (2004). Detecting Student Misuse of Intelligent Tutoring Systems (gaming the system)",
+  "url": "https://pact.cs.cmu.edu/pubs/Baker,%20Corbett,%20Koedinger%20ITS04.pdf",
+  "type": "paper",
+  "relevance": "Feature: rapid-fire attempts, systematic guessing, hint/help abuse and very low response latency as gaming markers that depress next-correct probability."
+ },
+ {
+  "title": "Aleven et al. (2016). Help Seeking and Intelligent Tutoring Systems: Toward Theoretical Integration",
+  "url": "https://www.cs.cmu.edu/~aleven/Papers/2016/Aleven_etal_IJAIED2016-Helpseeking.pdf",
+  "type": "review",
+  "relevance": "Feature: instrumental vs executive help-seeking (hint-level drill-down, bottom-out abuse, help avoidance) as metacognitive predictors of learning and correctness."
+ },
+ {
+  "title": "Understanding Student Effort Using Response-Time Propensities During Problem Solving (2026)",
+  "url": "https://arxiv.org/abs/2605.08943",
+  "type": "paper",
+  "relevance": "Feature: response-time propensity and its interaction with prior proficiency as an effort/learning-rate signal for next-answer correctness."
+ },
+ {
+  "title": "Demszky et al. (2021). Measuring Conversational Uptake: A Case Study on Student-Teacher Interactions",
+  "url": "https://arxiv.org/abs/2106.03873",
+  "type": "paper",
+  "relevance": "Feature: automated tutor-uptake score (revoicing/reformulating/answering student ideas) per turn; uptake correlates with instruction quality and achievement."
+ },
+ {
+  "title": "Graesser et al. (2014). Conversations with AutoTutor Help Students Learn (expectation & misconception-tailored dialogue)",
+  "url": "https://files.eric.ed.gov/fulltext/ED586836.pdf",
+  "type": "paper",
+  "relevance": "Feature: expectation-coverage and misconception-match scores from semantic comparison of student turns to anticipated correct answers/misconceptions."
+ },
+ {
+  "title": "Macina et al. (2023). MathDial: A Dialogue Tutoring Dataset with Rich Pedagogical Properties Grounded in Math Reasoning",
+  "url": "https://arxiv.org/abs/2305.14536",
+  "type": "dataset",
+  "relevance": "Dataset + feature: per-turn teacher-move taxonomy (focus/probe/telling, scaffolding questions) to train a move classifier whose distribution feeds the predictor."
+ },
+ {
+  "title": "Scarlatos et al. (2024/2025). Exploring Knowledge Tracing in Tutor-Student Dialogues using LLMs",
+  "url": "https://arxiv.org/abs/2409.16490",
+  "type": "paper",
+  "relevance": "Modeling: performs knowledge tracing directly on tutor-student dialogue turns \u2014 the closest prior art to predicting correctness from transcripts."
+ },
+ {
+  "title": "Scarlatos et al. (2025). Exploring LLMs for Predicting Tutor Strategy and Student Outcomes in Dialogues",
+  "url": "https://arxiv.org/abs/2507.06910",
+  "type": "paper",
+  "relevance": "Modeling: tutor-move sequence features (confirmatory feedback, giving instruction/explanation) predict dialogue-level student success via logistic regression."
+ },
+ {
+  "title": "Enhancing Talk Moves Analysis in Mathematics Tutoring through Classroom Teaching Discourse (2024)",
+  "url": "https://arxiv.org/abs/2412.13395",
+  "type": "paper",
+  "relevance": "Feature: accountable-talk move classification (pressing for reasoning, revoicing, encouraging participation) as transcript features from a robust classifier."
+ },
+ {
+  "title": "Demszky & Hill (2022). The NCTE Transcripts: A Dataset of Elementary Math Classroom Transcripts",
+  "url": "https://arxiv.org/abs/2211.11772",
+  "type": "dataset",
+  "relevance": "Dataset: annotated discourse-move transcripts linked to observation scores/outcomes; source for transfer-learning discourse features into the tutoring model."
+ },
+ {
+  "title": "Shridhar et al. (2022). Automatic Generation of Socratic Subquestions for Teaching Math Word Problems",
+  "url": "https://arxiv.org/abs/2211.12835",
+  "type": "paper",
+  "relevance": "Feature: presence and type of scaffolding subquestions vs direct answer-giving as a pedagogy-quality signal tied to guided reasoning."
+ },
+ {
+  "title": "Maurya et al. (2024/2025). Unifying AI Tutor Evaluation: A Taxonomy for Pedagogical Ability Assessment of LLM Tutors",
+  "url": "https://arxiv.org/abs/2412.09416",
+  "type": "paper",
+  "relevance": "Modeling: pedagogical rubric dimensions (mistake identification, mistake location, actionability, guidance, coherence) become per-turn quality features."
+ },
+ {
+  "title": "TeachLM: Post-Training LLMs for Education Using Authentic Learning Data (2025)",
+  "url": "https://arxiv.org/abs/2510.05087",
+  "type": "paper",
+  "relevance": "Modeling: characterizes behavioral signatures of authentic effective tutoring (adaptivity, questioning) that can be mined as discriminative transcript features."
+ },
+ {
+  "title": "Beyond Prior Knowledge: The Predictive Role of Knowledge-Building in Tutor Learning (2025)",
+  "url": "https://arxiv.org/abs/2508.18545",
+  "type": "paper",
+  "relevance": "Feature: ratio of student knowledge-building vs knowledge-telling responses predicts post-test scores over and above prior knowledge."
+ },
+ {
+  "title": "SMART: Simulated Students Aligned with Item Response Theory for Question Difficulty Prediction (2025)",
+  "url": "https://arxiv.org/abs/2507.05129",
+  "type": "paper",
+  "relevance": "Feature: an IRT-based predicted difficulty of the upcoming question is a key covariate; near-noise correctness is largely item-difficulty x mastery."
+ },
+ {
+  "title": "Deliberative Discourse Idealized and Realized: Accountable Talk in the Classroom and in Civic Life (Michaels, O'Connor & Resnick, 2008)",
+  "url": "https://cpb-us-w2.wpmucdn.com/sites.baylor.edu/dist/0/208/files/2014/11/Michaels-Accountable-Talk-1rfxenf.pdf",
+  "type": "paper",
+  "relevance": "Defines the three accountability dimensions (community, reasoning, knowledge) \u2014 encode transcript features counting revoicing, press-for-reasoning, and evidence-grounded moves as tutor-agnostic quality signal."
+ },
+ {
+  "title": "Developing dialogic teaching: genesis, process, trial (Alexander, 2018)",
+  "url": "https://robinalexander.org.uk/wp-content/uploads/2019/12/RPIE-2018-Alexander-dialogic-teaching.pdf",
+  "type": "paper",
+  "relevance": "Alexander's repertoires/indicators give a labeled inventory of dialogic moves that can become a rubric-style feature vector scored per session and correlated with next-item success."
+ },
+ {
+  "title": "Dialogic Teaching: EEF Evaluation Report and Executive Summary (Jay et al., 2017)",
+  "url": "https://files.eric.ed.gov/fulltext/ED581114.pdf",
+  "type": "review",
+  "relevance": "RCT showing ~2 months' attainment gain from dialogic talk \u2014 anchors expected effect sizes and validates that discourse-move density is a plausible predictor of learning outcomes."
+ },
+ {
+  "title": "Classroom dialogue: a systematic review across four decades of research (Howe & Abedin, 2013)",
+  "url": "https://bibliotecadigital.mineduc.cl/bitstream/handle/20.500.12365/17471/howe2013.pdf",
+  "type": "review",
+  "relevance": "Maps which dialogue organizations are evidence-linked to learning \u2014 use as a prior for which move categories to prioritize as features vs. discard as noise."
+ },
+ {
+  "title": "Teacher\u2013student dialogue during classroom teaching: Does it really impact on student outcomes? (Howe, Hennessy, Mercer, Vrikki & Wheatley, 2019)",
+  "url": "https://www.educ.cam.ac.uk/people/staff/hennessy/Howe_et_al_JLS_accepted_manuscript.pdf",
+  "type": "paper",
+  "relevance": "Finds elaboration and querying predict attainment only under high-participation ethos \u2014 motivates interaction features (move x participation-rate) rather than raw move counts."
+ },
+ {
+  "title": "Classroom Questioning (School Improvement Research Series / Cotton, Education Northwest)",
+  "url": "https://educationnorthwest.org/sites/default/files/ClassroomQuestioning.pdf",
+  "type": "review",
+  "relevance": "Synthesis of question cognitive-level and redirection effects \u2014 features for share of higher-order vs. recall questions and question-frequency preceding an assessment item."
+ },
+ {
+  "title": "The Role of Wait Time During the Questioning of Children: A Systematic Review (2024, PMC)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11545128/",
+  "type": "review",
+  "relevance": "Quantifies wait-time (>3s) effects on response quality \u2014 derive timing/pause features between tutor question and student response from timestamped transcripts."
+ },
+ {
+  "title": "What Makes Authentic Questions Authentic? (ERIC EJ1332735)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1332735.pdf",
+  "type": "paper",
+  "relevance": "Operationalizes Nystrand's authentic-question construct \u2014 build a classifier for open/authentic vs. test/known-answer questions as a dialogicity signal feature."
+ },
+ {
+  "title": "Talking and Thinking Together at Key Stage 1 (Mercer, Dawes, et al., Open University ORO)",
+  "url": "https://oro.open.ac.uk/777/2/Early_years_paper_D2_HO_April_2004.pdf",
+  "type": "paper",
+  "relevance": "Mercer's exploratory/cumulative/disputational talk typology \u2014 classify student contributions and use exploratory-talk markers (reasons, 'because', challenge+justify) as features."
+ },
+ {
+  "title": "Classroom Discourse: The Language of Teaching and Learning (Cazden, 1988/2001; ERIC ED288206)",
+  "url": "https://eric.ed.gov/?id=ED288206",
+  "type": "book",
+  "relevance": "Foundational account of the IRE/IRF sequence \u2014 segment transcripts into IRF triads and use follow-up-move type (evaluate vs. elaborate) as a structural feature."
+ },
+ {
+  "title": "The TalkMoves Dataset: K-12 Mathematics Lesson Transcripts Annotated for Teacher and Student Discursive Moves (Suresh et al., 2022)",
+  "url": "https://arxiv.org/abs/2204.09652",
+  "type": "dataset",
+  "relevance": "Labeled talk-move corpus to train/transfer a move tagger, then aggregate per-session move distributions as inputs to the correctness predictor."
+ },
+ {
+  "title": "Using Transformers to Provide Teachers with Personalized Feedback on their Classroom Discourse: The TalkMoves Application (Suresh et al., 2021)",
+  "url": "https://arxiv.org/abs/2105.07949",
+  "type": "paper",
+  "relevance": "BERT/RoBERTa talk-move classifiers with reported F1 \u2014 reusable pretrained move-detection pipeline for extracting features from noisy ASR transcripts."
+ },
+ {
+  "title": "Measuring Five Accountable Talk Moves to Improve Instruction at Scale (2023)",
+  "url": "https://arxiv.org/abs/2311.10749",
+  "type": "paper",
+  "relevance": "Scalable detectors for five accountable-talk moves \u2014 gives a compact, theory-grounded feature set (keep-together, restate, press-reasoning, etc.) per session."
+ },
+ {
+  "title": "Analyzing Large Language Models for Classroom Discussion Assessment (EDM 2024)",
+  "url": "https://arxiv.org/abs/2406.08680",
+  "type": "paper",
+  "relevance": "Compares LLM vs. RoBERTa for discussion-quality scoring \u2014 informs whether to use zero-shot LLM discourse scores or fine-tuned taggers as features."
+ },
+ {
+  "title": "The Promises and Pitfalls of Using Language Models to Measure Instruction Quality in Education (2024)",
+  "url": "https://arxiv.org/abs/2404.02444",
+  "type": "paper",
+  "relevance": "Documents where LM-derived discourse quality measures fail \u2014 guides which automated features are reliable enough to feed a near-noise correctness predictor."
+ },
+ {
+  "title": "Multimodal Assessment of Classroom Discourse Quality: A Text-Centered Attention-Based Multi-Task Learning Approach (2025)",
+  "url": "https://arxiv.org/abs/2505.07902",
+  "type": "paper",
+  "relevance": "Shows text+acoustic multi-task modeling of discourse quality \u2014 suggests adding prosodic/pause features and multi-task auxiliary discourse-quality heads."
+ },
+ {
+  "title": "Towards Actionable Pedagogical Feedback: A Multi-Perspective Analysis of Mathematics Teaching and Tutoring Dialogue (2025)",
+  "url": "https://arxiv.org/abs/2505.07161",
+  "type": "paper",
+  "relevance": "Multi-perspective dialogue analysis bridging teaching and tutoring \u2014 a taxonomy of dialogue dimensions to engineer as complementary features."
+ },
+ {
+  "title": "Aligning Tutor Discourse Supporting Rigorous Thinking with Tutee Content Mastery for Predicting Math Achievement (2024)",
+  "url": "https://arxiv.org/abs/2405.06218",
+  "type": "paper",
+  "relevance": "Explicitly links tutor rigorous-thinking moves to tutee mastery gains \u2014 a template for the exact feature->outcome mapping this project needs, incl. engagement mediation."
+ },
+ {
+  "title": "Interpretable Difficulty-Aware Knowledge Tracing in Tutor-Student Dialogues (Huang et al., 2026)",
+  "url": "https://arxiv.org/abs/2605.01097",
+  "type": "paper",
+  "relevance": "IRT-grounded conversational KT mapping LLM outputs to student ability and task difficulty \u2014 add difficulty and latent-ability features for next-item correctness prediction."
+ },
+ {
+  "title": "Leveraging LLMs to Assess Tutor Moves in Real-Life Dialogues: A Feasibility Study (2025)",
+  "url": "https://arxiv.org/abs/2506.17410",
+  "type": "paper",
+  "relevance": "Tests LLM scoring of tutor moves on authentic (noisy) dialogues \u2014 validates feasibility of automated move features on the messy real transcripts this task uses."
+ },
+ {
+  "title": "Discussion Tracker: Supporting Teacher Learning about Students' Collaborative Argumentation in High School Classrooms (Olshefski et al., 2021)",
+  "url": "https://arxiv.org/abs/2102.10293",
+  "type": "paper",
+  "relevance": "Classifiers for argument moves, specificity, and collaboration \u2014 gives student-side argumentation features (specificity, linking) that may signal comprehension."
+ },
+ {
+  "title": "Argument Component Classification for Classroom Discussions (Lugini & Litman, 2019)",
+  "url": "https://arxiv.org/abs/1909.03022",
+  "type": "paper",
+  "relevance": "Detects claims/evidence/warrants in student talk \u2014 extract argument-structure counts per student as features correlated with mastery of the assessed content."
+ },
+ {
+  "title": "Annotating Student Talk in Text-based Classroom Discussions (Lugini & Litman, 2019)",
+  "url": "https://arxiv.org/abs/1909.03023",
+  "type": "paper",
+  "relevance": "Coding scheme for student-talk dimensions (argumentation, specificity, knowledge domain) \u2014 a ready feature schema for characterizing student contributions."
+ },
+ {
+  "title": "Tutor Move Taxonomy: A Theory-Aligned Framework for Analyzing Instructional Moves in Tutoring (Zhou et al., 2026)",
+  "url": "https://arxiv.org/abs/2603.05778",
+  "type": "paper",
+  "relevance": "Theory-aligned, AI-annotatable tutor-move taxonomy built to relate tutoring behaviors to learning outcomes \u2014 a principled, tutor-agnostic feature ontology for this model."
+ },
+ {
+  "title": "AI-Driven Assessment of Human Tutors: Linking Training Performance to Real-Life Practice (Thomas et al., 2026)",
+  "url": "https://arxiv.org/abs/2606.18617",
+  "type": "paper",
+  "relevance": "Generative-AI scoring of tutor practice across 405 sessions \u2014 methods for turning transcripts into validated tutor-competency scores usable as session-level features."
+ },
+ {
+  "title": "Productive Discussion Moves in Groups Addressing Controversial Issues (Kim et al., 2026)",
+  "url": "https://arxiv.org/abs/2601.05651",
+  "type": "paper",
+  "relevance": "Finds specific interactional patterns (linking emotion to evidence, acknowledging ambiguity) predict discussion quality \u2014 candidate higher-order interaction features beyond single-move counts."
+ },
+ {
+  "title": "Deep Knowledge Tracing (Piech et al., 2015)",
+  "url": "https://arxiv.org/abs/1506.05908",
+  "type": "paper",
+  "relevance": "Core RNN baseline: encode the transcript as a sequence of (skill, correct) one-hot interactions and predict next-item correctness directly."
+ },
+ {
+  "title": "How Deep is Knowledge Tracing? (Khajah, Lindsey, Mozer, 2016)",
+  "url": "https://arxiv.org/abs/1604.02416",
+  "type": "paper",
+  "relevance": "Shows DKT's edge comes from recency, spacing and ability regularities BKT ignores; motivates explicit recency/attempt-count features per KC."
+ },
+ {
+  "title": "Dynamic Key-Value Memory Networks for Knowledge Tracing (Zhang et al., 2017)",
+  "url": "https://arxiv.org/abs/1611.08108",
+  "type": "paper",
+  "relevance": "Per-concept memory slots: maintain a running per-KC mastery vector updated across the transcript as a state feature."
+ },
+ {
+  "title": "Addressing Two Problems in DKT via Prediction-Consistent Regularization / DKT+ (Yeung & Yeung, 2018)",
+  "url": "https://arxiv.org/abs/1806.02180",
+  "type": "paper",
+  "relevance": "Reconstruction + waviness regularizers give stable per-step mastery; apply a smoothness prior on the predicted correctness trajectory."
+ },
+ {
+  "title": "Performance Factors Analysis - A New Alternative to Knowledge Tracing (Pavlik, Cen, Koedinger, 2009)",
+  "url": "https://files.eric.ed.gov/fulltext/ED506305.pdf",
+  "type": "paper",
+  "relevance": "Logistic on per-skill prior success/failure counts; cheapest tutor-agnostic features = running #successes and #failures per KC."
+ },
+ {
+  "title": "Individualized Bayesian Knowledge Tracing Models (Yudelson, Koedinger, Gordon, 2013)",
+  "url": "https://www.cs.cmu.edu/~ggordon/yudelson-koedinger-gordon-individualized-bayesian-knowledge-tracing.pdf",
+  "type": "paper",
+  "relevance": "Per-student learn/guess/slip parameters; add a student-level ability prior estimated from early turns as a feature."
+ },
+ {
+  "title": "A Trainable Spaced Repetition Model for Language Learning / Half-Life Regression (Settles & Meeder, ACL 2016)",
+  "url": "https://aclanthology.org/P16-1174.pdf",
+  "type": "paper",
+  "relevance": "Half-life recall model: time-since-last-practice of the target KC and lag time become explicit forgetting features."
+ },
+ {
+  "title": "A Self-Attentive Model for Knowledge Tracing / SAKT (Pandey & Karypis, 2019)",
+  "url": "https://arxiv.org/abs/1907.06837",
+  "type": "paper",
+  "relevance": "Self-attention from the next question to relevant past turns; attention-weighted history handles sparse transcripts."
+ },
+ {
+  "title": "Towards an Appropriate Query, Key, and Value Computation for KT / SAINT (Choi et al., 2020)",
+  "url": "https://arxiv.org/abs/2002.07033",
+  "type": "paper",
+  "relevance": "Separated encoder (questions) / decoder (responses) Transformer; lets you stack deep attention over long tutoring transcripts."
+ },
+ {
+  "title": "SAINT+: Integrating Temporal Features for EdNet Correctness Prediction (Shin et al., 2020)",
+  "url": "https://arxiv.org/abs/2010.12042",
+  "type": "paper",
+  "relevance": "Adds elapsed-time and lag-time embeddings; response latency and inter-turn gaps are strong tutor-agnostic timing features."
+ },
+ {
+  "title": "Context-Aware Attentive Knowledge Tracing / AKT (Ghosh, Heffernan, Lan, KDD 2020)",
+  "url": "https://arxiv.org/abs/2007.12324",
+  "type": "paper",
+  "relevance": "Monotonic exponential-decay attention plus Rasch difficulty embedding; time-decayed context distance and question-difficulty features."
+ },
+ {
+  "title": "Deep-IRT: Making DKT Explainable Using Item Response Theory (Yeung, EDM 2019)",
+  "url": "https://arxiv.org/abs/1904.11738",
+  "type": "paper",
+  "relevance": "Emits interpretable ability and item-difficulty per step; use IRT ability x difficulty as theory-grounded features for correctness."
+ },
+ {
+  "title": "Deep Knowledge Tracing is an Implicit Dynamic Multidimensional IRT Model (Converse et al., 2023)",
+  "url": "https://arxiv.org/abs/2309.12334",
+  "type": "paper",
+  "relevance": "Theory bridge: justifies interpreting the correctness logit as latent-ability times item-discrimination; guides constrained model heads."
+ },
+ {
+  "title": "Temporal Cross-Effects in Knowledge Tracing / HawkesKT (Wang et al., WSDM 2021)",
+  "url": "http://www.thuir.cn/group/~YQLiu/publications/WSDM2021Wang.pdf",
+  "type": "paper",
+  "relevance": "Hawkes-process decay of cross-KC influence; build time-decayed cross-concept practice features with per-KC decay rates."
+ },
+ {
+  "title": "Deep Knowledge Tracing with Learning Curves (Chen et al., Frontiers 2023)",
+  "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1150329/pdf",
+  "type": "paper",
+  "relevance": "Explicit learning-curve/forgetting term over attempts and elapsed time; per-KC attempt count and time-decay features."
+ },
+ {
+  "title": "A Survey of Knowledge Tracing: Models, Variants, and Applications (Liu et al., 2021)",
+  "url": "https://arxiv.org/abs/2105.15106",
+  "type": "review",
+  "relevance": "Taxonomy (deep / memory / attentive / graph) to enumerate candidate signals and pick a model family for the transcript task."
+ },
+ {
+  "title": "pyKT: A Python Library to Benchmark Deep Learning based KT Models (Liu et al., NeurIPS 2022)",
+  "url": "https://arxiv.org/abs/2206.11460",
+  "type": "dataset",
+  "relevance": "Warns of label leakage in one-by-one evaluation; adopt its all-in-one protocol and reference implementations to avoid inflated correctness AUC."
+ },
+ {
+  "title": "simpleKT: A Simple But Tough-to-Beat Baseline for Knowledge Tracing (Liu et al., ICLR 2023)",
+  "url": "https://arxiv.org/abs/2302.06881",
+  "type": "paper",
+  "relevance": "Rasch question-difficulty embedding + plain dot-product attention; a strong minimal baseline and a scalar question-difficulty feature."
+ },
+ {
+  "title": "Enhancing Deep Knowledge Tracing with Auxiliary Tasks / AT-DKT (Liu et al., WWW 2023)",
+  "url": "https://arxiv.org/abs/2302.07942",
+  "type": "paper",
+  "relevance": "Auxiliary question-tagging and history-prediction tasks improve next-response accuracy; multitask objective for weak transcript signal."
+ },
+ {
+  "title": "Towards Robust Knowledge Tracing Models via k-Sparse Attention / sparseKT (Huang et al., SIGIR 2023)",
+  "url": "https://arxiv.org/abs/2407.17097",
+  "type": "paper",
+  "relevance": "Keep only top-k relevant past turns; robustness recipe for noisy or long tutoring histories."
+ },
+ {
+  "title": "DKT2: Revisiting Applicable and Comprehensive Knowledge Tracing in Large-Scale Data (2025)",
+  "url": "https://arxiv.org/abs/2501.14256",
+  "type": "paper",
+  "relevance": "Recent xLSTM + IRT practical recipe balancing accuracy and deployability; modern reference architecture for correctness prediction."
+ },
+ {
+  "title": "Next Token Knowledge Tracing: Exploiting Pretrained LLM Representations to Decode Student Behaviour (2025)",
+  "url": "https://arxiv.org/abs/2511.02599",
+  "type": "paper",
+  "relevance": "Reframes KT as next-token prediction using LLM embeddings of question text; supplies tutor-agnostic semantic features of each item."
+ },
+ {
+  "title": "A Systematic Review of Knowledge Tracing and Large Language Models (2024)",
+  "url": "https://arxiv.org/abs/2412.09248",
+  "type": "review",
+  "relevance": "Maps LLM-KT design choices (prompting, embeddings, fusion) for text transcripts; guides how to combine LLM signal with sequence models."
+ },
+ {
+  "title": "Language Bottleneck Models for Qualitative Knowledge State Modeling (2025)",
+  "url": "https://arxiv.org/abs/2506.16982",
+  "type": "paper",
+  "relevance": "Compresses a transcript into a natural-language knowledge-state summary used to predict correctness - an interpretable text-feature bottleneck."
+ },
+ {
+  "title": "EdNet: A Large-Scale Hierarchical Dataset in Education (Choi et al., 2019)",
+  "url": "https://arxiv.org/abs/1912.03072",
+  "type": "dataset",
+  "relevance": "Large interaction dataset with rich timing/action fields for pretraining and for defining tutor-agnostic behavioral features."
+ },
+ {
+  "title": "GIKT: A Graph-based Interaction Model for Knowledge Tracing (Yang et al., 2020)",
+  "url": "https://arxiv.org/abs/2009.05991",
+  "type": "paper",
+  "relevance": "Question-KC bipartite graph aggregation; use skill-relatedness between the next question and past turns as a similarity feature."
+ },
+ {
+  "title": "HiTSKT: A Hierarchical Transformer Model for Session-Aware Knowledge Tracing (Ke et al., 2022)",
+  "url": "https://arxiv.org/abs/2212.12139",
+  "type": "paper",
+  "relevance": "Two-level within-session / across-session attention; models the session structure of a tutoring transcript and cross-session forgetting."
+ },
+ {
+  "title": "Corbett & Anderson (1995), Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge",
+  "url": "http://act-r.psy.cmu.edu/?post_type=publications&p=14344",
+  "type": "paper",
+  "relevance": "Foundational BKT: per-skill latent mastery probability with learn/guess/slip params \u2014 yields a running P(mastery) feature per knowledge component to feed next-question correctness."
+ },
+ {
+  "title": "Scarlatos et al. (2025), Training LLM-based Tutors to Improve Student Learning Outcomes in Dialogues",
+  "url": "https://arxiv.org/abs/2503.06424",
+  "type": "paper",
+  "relevance": "Uses an LLM student model that scores P(correct next response) given dialogue history \u2014 essentially the exact modeling target we want to predict."
+ },
+ {
+  "title": "Boyer et al. (2008), Learner Characteristics and Feedback in Tutorial Dialogue",
+  "url": "https://aclanthology.org/W08-0907.pdf",
+  "type": "paper",
+  "relevance": "Prior knowledge + dialogue-act and feedback features predict outcomes \u2014 early evidence for combining learner-state with discourse features."
+ },
+ {
+  "title": "Suresh et al. (2021), What Would a Teacher Do? Predicting Future Talk Moves",
+  "url": "https://aclanthology.org/2021.findings-acl.418.pdf",
+  "type": "paper",
+  "relevance": "Sequence modeling of accountable-talk moves \u2014 talk-move transition features and next-move prediction as context for student response quality."
+ },
+ {
+  "title": "Maurya et al. (2025), Findings of the BEA 2025 Shared Task on Pedagogical Ability Assessment of AI-powered Tutors",
+  "url": "https://arxiv.org/abs/2507.10579",
+  "type": "paper",
+  "relevance": "Defines mistake-identification/location/guidance/actionability dimensions on tutor turns \u2014 pedagogical-quality features of the preceding tutor move."
+ },
+ {
+  "title": "Vail et al. (2024), Automatically Detecting Confusion and Conflict During Collaborative Learning Using Linguistic, Prosodic, and Facial Cues",
+  "url": "https://arxiv.org/abs/2401.15201",
+  "type": "paper",
+  "relevance": "Text/linguistic cues that detect confusion \u2014 concrete NLP features (hedges, disfluency, negations) computable directly from a transcript."
+ },
+ {
+  "title": "Forbes-Riley & Litman (2008), Responding to Student Uncertainty During Computer Tutoring: An Experimental Evaluation",
+  "url": "https://people.cs.pitt.edu/~litman/50910060.pdf",
+  "type": "paper",
+  "relevance": "Student uncertainty (hedging, pauses) is a decisive tutoring signal \u2014 uncertainty markers per student turn as a predictor of next-answer errors."
+ },
+ {
+  "title": "Recognizing Uncertainty in Speech (2011)",
+  "url": "https://arxiv.org/abs/1103.1898",
+  "type": "paper",
+  "relevance": "Lexical/prosodic uncertainty-cue inventory \u2014 a ready lexicon of hedging/uncertainty words to featurize student turns in text transcripts."
+ },
+ {
+  "title": "Early Detection of Wheel-Spinning: Comparison Across Tutors (Gong & Beck)",
+  "url": "https://files.eric.ed.gov/fulltext/ED599222.pdf",
+  "type": "paper",
+  "relevance": "Wheel-spinning = many attempts without mastery \u2014 an unproductive-persistence feature (attempts-without-3-in-a-row) predicting continued failure."
+ },
+ {
+  "title": "Rastrollo-Guerrero et al. (2021), Educational Data Mining Techniques for Student Performance Prediction: Method Review",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8688359/",
+  "type": "review",
+  "relevance": "Open-access survey of features/algorithms for performance prediction \u2014 grounds baseline feature sets and model choices (RF, RNN) for the task."
+ },
+ {
+  "title": "Predicting Student's Performance Through Data Mining (2021)",
+  "url": "https://arxiv.org/abs/2112.01247",
+  "type": "paper",
+  "relevance": "End-to-end EDM feature engineering + classifier pipeline \u2014 a concrete template for turning heterogeneous session signals into a correctness classifier."
+ },
+ {
+  "title": "Knowledge Distillation in RNN-Attention Models for Early Prediction of Student Performance (2024)",
+  "url": "https://arxiv.org/abs/2412.14526",
+  "type": "paper",
+  "relevance": "Attention over partial sequences for early prediction \u2014 architecture for predicting outcomes from short/truncated transcripts (near-noise, few turns)."
+ },
+ {
+  "title": "Identifying At-Risk K-12 Students in Multimodal Online Environments (2020)",
+  "url": "https://arxiv.org/abs/2003.09670",
+  "type": "paper",
+  "relevance": "Multimodal at-risk classifier \u2014 feature-fusion recipe for combining engagement, behavior, and content signals when any single signal is weak."
+ },
+ {
+  "title": "Huang et al. (2017), Question Difficulty Prediction for Reading Problems in Standard Tests",
+  "url": "http://staff.ustc.edu.cn/~cheneh/paper_pdf/2017/Zhengya-Huang-AAAI.pdf",
+  "type": "paper",
+  "relevance": "Predicts item difficulty from question text via neural models \u2014 a text-derived difficulty feature for the upcoming assessment question."
+ },
+ {
+  "title": "Benedetto et al. (2020), Introducing a Framework to Assess Newly Created Questions with NLP",
+  "url": "https://arxiv.org/abs/2004.13530",
+  "type": "paper",
+  "relevance": "NLP features to calibrate question difficulty/discrimination without response data \u2014 cold-start difficulty features for the next item's text."
+ },
+ {
+  "title": "Zhang et al. (2022), Automatic Short Math Answer Grading via In-context Meta-learning (EDM 2022)",
+  "url": "https://educationaldatamining.org/edm2022/proceedings/2022.EDM-long-papers.11/index.html",
+  "type": "paper",
+  "relevance": "Scores semantic correctness of open student responses with few examples \u2014 turn a free-text student answer in the transcript into a correct/incorrect feature."
+ },
+ {
+  "title": "The Power of Feedback (Hattie & Timperley, 2007)",
+  "url": "https://open-publishing.org/wp-content/uploads/2024/02/Hattie-PowerFeedback-2007.pdf",
+  "type": "review",
+  "relevance": "Feature: tag each tutor turn by feedback level (task / process / self-regulation / self) and by which of the three questions it answers (feed-up/back/forward) \u2014 level composition of a session as a predictor."
+ },
+ {
+  "title": "Focus on Formative Feedback (Shute, 2008)",
+  "url": "https://andymatuschak.org/files/papers/Shute%20-%202008%20-%20Focus%20on%20Formative%20Feedback.pdf",
+  "type": "review",
+  "relevance": "Feature: code feedback type (verification vs. elaboration/hint/worked-example), timing, and specificity per turn; her interaction rules give conditions where richer feedback should help vs. hurt."
+ },
+ {
+  "title": "The Effects of Feedback Interventions on Performance: FIT (Kluger & DeNisi, 1996)",
+  "url": "https://www.semanticscholar.org/paper/The-effects-of-feedback-interventions-on-A-review,-Kluger-Denisi/97cce81ca813ed757e1e76c0023865c7dbdc7308",
+  "type": "review",
+  "relevance": "Modeling idea: a ~1/3 of feedback lowers performance \u2014 add a 'feedback-directs-attention-to-self' signal (praise/person-focused turns) as a negative predictor of next-item correctness."
+ },
+ {
+  "title": "Inside the Black Box: Raising Standards Through Classroom Assessment (Black & Wiliam, 1998)",
+  "url": "https://people.bath.ac.uk/edspd/Weblinks/MA_Ass/Resources/Using%20assessment%20formatively/Black%20&%20Wiliam%201998%20PDK.pdf",
+  "type": "review",
+  "relevance": "Session-level feature: detect a complete formative loop (elicit evidence \u2192 interpret \u2192 act/adjust) in the transcript; presence/closure of the loop as tutor-agnostic quality signal."
+ },
+ {
+  "title": "Feedback and Self-Regulated Learning: A Theoretical Synthesis (Butler & Winne, 1995)",
+  "url": "https://www.semanticscholar.org/paper/Feedback-and-Self-Regulated-Learning:-A-Theoretical-Butler-Winne/9d1830095147e88333e448a2b683c617d58ea7f1",
+  "type": "review",
+  "relevance": "Feature: markers of student self-monitoring / internal feedback (self-checks, revised answers) \u2014 internally-generated feedback predicts uptake independent of tutor."
+ },
+ {
+  "title": "The Critical Role of Retrieval Practice / Test-Enhanced Learning (Roediger & Butler, 2011)",
+  "url": "http://psychnet.wustl.edu/memory/wp-content/uploads/2018/04/Roediger-Butler-2011_TCS.pdf",
+  "type": "review",
+  "relevance": "Feature: count retrieval attempts vs. re-study before the target item, and whether correct-answer feedback followed errors \u2014 right/wrong-only feedback is weak; corrected retrieval predicts gains."
+ },
+ {
+  "title": "Desirable Difficulties in Theory and Practice (Bjork & Bjork, 2020)",
+  "url": "https://www.waddesdonschool.com/wp-content/uploads/2021/02/Desriable-Difficulties-in-theory-and-practice-Bjork-Bjork-2020.pdf",
+  "type": "review",
+  "relevance": "Feature: spacing, interleaving, and generation/struggle indicators in the session \u2014 'harder-now' conditions depress current accuracy but should raise next-item transfer, a key confound to model."
+ },
+ {
+  "title": "Eliciting Self-Explanations Improves Understanding (Chi et al.)",
+  "url": "https://mrbartonmaths.com/resourcesnew/8.%20Research/Self%20explanations/Self%20Explaining%20(Chi).pdf",
+  "type": "paper",
+  "relevance": "Feature: quantify student self-explanation / reasoning-rich turns (why/because, principle references) vs. shallow acknowledgments as a positive next-correct signal."
+ },
+ {
+  "title": "A Meta-Analysis of Feedback Timing on Learning in Computer-Assisted Learning (2026)",
+  "url": "https://hal.science/hal-05546645v1/file/Meta_HAL_submission.pdf",
+  "type": "review",
+  "relevance": "Feature: encode feedback delay as intervening-items or elapsed-time, plus feedback focus/assessment type moderators \u2014 timing effect is null on average but strongly moderated, so interact these features."
+ },
+ {
+  "title": "The Effect of Formative Assessment Practices on Student Learning: A Meta-Analysis",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1329204.pdf",
+  "type": "review",
+  "relevance": "Feature: distinguish student-initiated vs. adult-initiated vs. computer-initiated feedback (effect sizes 1.16 / 0.69 / 0.42) \u2014 who initiates the formative move is a strong effect moderator to encode."
+ },
+ {
+  "title": "A Systematic Review of Meta-Analyses on Formative Assessment in K-12 (Sustainability, 2024)",
+  "url": "https://www.mdpi.com/2071-1050/16/17/7826",
+  "type": "review",
+  "relevance": "Map of which formative-assessment moderators (feedback quality, engagement, self-regulation) carry effect \u2014 a checklist of theory-grounded features and priors for a near-noise task."
+ },
+ {
+  "title": "Effectiveness of Formative Assessment for Reading Achievement in K-12: A Meta-Analysis (Frontiers, 2022)",
+  "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2022.990196/full",
+  "type": "review",
+  "relevance": "Moderator evidence (feedback frequency, agent, subject) for setting realistic effect-size priors and choosing which transcript features are worth extracting."
+ },
+ {
+  "title": "Properties of the Bayesian Knowledge Tracing Model (Van de Sande)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1115329.pdf",
+  "type": "paper",
+  "relevance": "Modeling idea: BKT's learn/slip/guess/prior parameters as an interpretable latent-mastery baseline; slip/guess directly model the near-noise floor on next-item correctness."
+ },
+ {
+  "title": "Uncertainty-Aware Knowledge Tracing Models",
+  "url": "https://arxiv.org/abs/2509.21514",
+  "type": "paper",
+  "relevance": "Modeling idea: calibrated predictive uncertainty for a near-noise target \u2014 abstain/confidence outputs so the model reports when signal is genuinely absent."
+ },
+ {
+  "title": "Towards Pedagogically Aligned LLM Tutors for Math Mistake Remediation",
+  "url": "https://arxiv.org/abs/2606.21502",
+  "type": "paper",
+  "relevance": "Feature: scaffolding, factuality, and answer-leakage indicators of a tutor turn \u2014 leaked answers vs. genuine scaffolding change what 'next correct' actually measures."
+ },
+ {
+  "title": "The Impact of Off-Task and Gaming Behaviors on Learning (Cocea, Hershkovitz & Baker)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/CoceaHershkovitzBakerFinal.pdf",
+  "type": "paper",
+  "relevance": "Feature: detect gaming/off-task patterns (rapid guessing, hint-abuse, systematic wrong-then-right) \u2014 behavioral negatives that predict failure regardless of tutor content."
+ },
+ {
+  "title": "Affect-Driven Learning Outcomes Prediction in Intelligent Tutoring Systems (Joshi et al.)",
+  "url": "https://www.cs.bu.edu/fac/betke/papers/Joshi-etal-FG2019.pdf",
+  "type": "paper",
+  "relevance": "Modeling idea: fuse affect + disengagement + performance to predict outcomes \u2014 engaged concentration (and even frustration) as features alongside raw correctness history."
+ },
+ {
+  "title": "'Good job!' The Impact of Positive and Negative Feedback on Performance (2023)",
+  "url": "https://arxiv.org/abs/2301.11776",
+  "type": "paper",
+  "relevance": "Feature: sentiment/valence and directiveness of tutor feedback turns \u2014 positive vs. corrective/negative feedback have asymmetric effects on subsequent performance."
+ },
+ {
+  "title": "LLMs Approach Expert Pedagogical Quality in Math Tutoring but Differ in Profiles (2025)",
+  "url": "https://arxiv.org/abs/2512.20780",
+  "type": "paper",
+  "relevance": "Feature: instructional and linguistic profile features (questioning rate, explanation density, lexical hedging) that separate effective from ineffective tutoring turns."
+ },
+ {
+  "title": "The ICAP Framework: Linking Cognitive Engagement to Active Learning Outcomes (Chi & Wylie, 2014)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1044018.pdf",
+  "type": "review",
+  "relevance": "Core theory: label each student turn Passive/Active/Constructive/Interactive; per-session ICAP-mode distribution and highest-mode-reached become the primary engagement features."
+ },
+ {
+  "title": "Applying the ICAP Framework to Improve Classroom Learning (Chi & Boucher)",
+  "url": "https://www.unh.edu/teaching-learning-resource-hub/sites/default/files/media/2023-05/itow-applying-the-icap-framework-to-improve-classroom-learning-chi-boucher.pdf",
+  "type": "paper",
+  "relevance": "Gives concrete overt-behavior exemplars per mode (note-taking vs. explaining vs. co-constructing) \u2014 a coding rubric you can turn into an utterance classifier for automatic ICAP tagging."
+ },
+ {
+  "title": "Putting ICAP to the Test: technology-enhanced learning activities vs. cognitive & affective-motivational outcomes (Scientific Reports, 2024)",
+  "url": "https://www.nature.com/articles/s41598-024-66069-y",
+  "type": "paper",
+  "relevance": "Cautionary recent evidence that the strict I>C>A>P ordering doesn't always hold \u2014 motivates modeling individual activity types/features rather than a single ordinal engagement score."
+ },
+ {
+  "title": "Active Learning Through Discussion: ICAP Framework for Education in Health Professions (BMC Med Educ, 2020)",
+  "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6937678/",
+  "type": "paper",
+  "relevance": "Shows self-study + question-generation before discussion predicts post-test score, mediated by mental effort \u2014 supports a 'did the student generate questions?' feature and effort proxies."
+ },
+ {
+  "title": "Evaluation of Studies Based on the ICAP Framework in Learning Environments",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1422395.pdf",
+  "type": "review",
+  "relevance": "Survey of how ICAP has been operationalized across studies \u2014 a menu of measurable behavioral proxies for each mode to engineer as features."
+ },
+ {
+  "title": "School Engagement: Potential of the Concept / Academic Engagement Overview (ERIC EJ1121524)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1121524.pdf",
+  "type": "review",
+  "relevance": "Fredricks-style behavioral/emotional/cognitive engagement taxonomy \u2014 separate transcript feature groups (participation counts, sentiment/affect, depth-of-processing markers)."
+ },
+ {
+  "title": "Question Asking During Tutoring (Graesser & Person, 1994)",
+  "url": "https://gwern.net/doc/psychology/spaced-repetition/1994-graesser.pdf",
+  "type": "paper",
+  "relevance": "Deep-reasoning question QUALITY (not frequency) correlates with achievement \u2014 feature: count of student deep/why-how questions via the GPH question taxonomy."
+ },
+ {
+  "title": "AutoTutor: An Intelligent Tutoring System with Mixed-Initiative Dialogue",
+  "url": "https://bpb-us-w2.wpmucdn.com/blogs.memphis.edu/dist/d/2954/files/2019/10/AutoTutor-An-intelligent-tutoring-system-with-mixed-initiative-dialogue.pdf",
+  "type": "paper",
+  "relevance": "Expectation-Misconception-Tailored dialogue: features = fraction of 'expectations' the student verbalized and misconception markers present before the assessment item."
+ },
+ {
+  "title": "Modeling One-on-one Online Tutoring Discourse using an Accountable Talk Framework (EDM 2022)",
+  "url": "https://educationaldatamining.org/edm2022/proceedings/2022.EDM-short-papers.48/index.html",
+  "type": "paper",
+  "relevance": "Adapts accountable-talk (accountability to community/knowledge/rigorous thinking) to 1:1 tutoring \u2014 a tutor-agnostic move taxonomy for feature engineering."
+ },
+ {
+  "title": "Brief but Impactful: How Human Tutoring Interactions Shape Engagement in Online Learning (2026)",
+  "url": "https://arxiv.org/abs/2601.09994",
+  "type": "paper",
+  "relevance": "Aligns transcript conversational moves with moment-to-moment productivity gains \u2014 method for pinpointing which tutor/student moves precede success on the next item."
+ },
+ {
+  "title": "From Words to Wisdom: Discourse Annotation and Baseline Models for Student Dialogue Understanding (2025)",
+  "url": "https://arxiv.org/abs/2511.20547",
+  "type": "dataset",
+  "relevance": "Student-side discourse annotation schema plus baseline classifiers \u2014 schema and models for turning raw student turns into engagement/understanding features."
+ },
+ {
+  "title": "Combining Log Data and Collaborative Dialogue Features to Predict Project Quality in Middle School AI Education (2025)",
+  "url": "https://arxiv.org/abs/2506.11326",
+  "type": "paper",
+  "relevance": "Shows Sentence-BERT dialogue embeddings + structured dialogue features predict an outcome \u2014 an embedding+handcrafted feature-fusion recipe for near-noise prediction."
+ },
+ {
+  "title": "Predicting Cognitive Engagement in Online Course Discussion Forums (Gorgun & Bulut, EDM 2022; ERIC ED624102)",
+  "url": "https://files.eric.ed.gov/fulltext/ED624102.pdf",
+  "type": "paper",
+  "relevance": "Hand-codes posts to ICAP-style cognitive-engagement levels then trains ML on linguistic/contextual features \u2014 a concrete feature list for automatic engagement scoring of student text."
+ },
+ {
+  "title": "Knowledge Co-construction and Initiative in Peer Learning Interactions (AIED 2009)",
+  "url": "http://nlp.cs.uic.edu/PS-papers/kscpal-aied09.pdf",
+  "type": "paper",
+  "relevance": "Initiative shifts and knowledge co-construction episodes correlate with learning \u2014 feature: who-drives-the-turn ratio and count of co-construction exchanges."
+ },
+ {
+  "title": "Exploratory Talk / Critical Thinking via WebQuest (Mercer tradition; PMC7471859)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7471859/",
+  "type": "paper",
+  "relevance": "Classify talk as disputational/cumulative/exploratory; reasoning-word markers ('because','if','I think','why') distinguish exploratory (reasoning-visible) talk that predicts gains."
+ },
+ {
+  "title": "Learning Engagement in Massive Open Online Courses (Frontiers in Education, 2022)",
+  "url": "https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2022.1074435/pdf",
+  "type": "paper",
+  "relevance": "Operationalizes cognitive/emotional/behavioral engagement from text and links to achievement \u2014 validated indicator set for scoring student contributions in transcripts."
+ },
+ {
+  "title": "Interactive-engagement vs. Traditional Methods (Hake, 1998)",
+  "url": "http://www.physics.indiana.edu/~sdi/ajpv3i.pdf",
+  "type": "paper",
+  "relevance": "Foundational 'interactive engagement' evidence with normalized-gain metric; motivates using an interactivity index of the session as a predictor and normalized-gain as target framing."
+ },
+ {
+  "title": "Chi et al. (1994) / SERT lineage \u2014 Self-Explanation and Reading Strategy Training (SERT) manual",
+  "url": "https://files.eric.ed.gov/fulltext/ED577143.pdf",
+  "type": "book",
+  "relevance": "Defines the five self-explanation strategies (monitoring, paraphrase, elaboration, prediction, bridging) \u2192 codeable transcript labels; strategy mix per student is a signal."
+ },
+ {
+  "title": "Flavell (1979) \u2014 Metacognition and Cognitive Monitoring: A New Area of Cognitive-Developmental Inquiry",
+  "url": "https://eric.ed.gov/?id=EJ217109",
+  "type": "paper",
+  "relevance": "Origin of the metacognition construct (knowledge/experience/goals/strategies) \u2192 framework for tagging metacognitive utterances (monitoring statements) as features."
+ },
+ {
+  "title": "The Future of Metacognition Research: Balancing Construct Breadth with Measurement Rigor (2024)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11139654/",
+  "type": "review",
+  "relevance": "Modern taxonomy of metacognition measures \u2192 guides which monitoring/control signals are reliably extractable from text vs noise; feature-validity checklist."
+ },
+ {
+  "title": "Student Metacognitive Monitoring: Predicting Test Achievement (calibration/JOL study)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1067481.pdf",
+  "type": "paper",
+  "relevance": "Judgments-of-learning calibration predicts test performance \u2192 feature: student confidence/hedging language and calibration gap vs actual correctness."
+ },
+ {
+  "title": "A Review of Self-Regulated Learning: Six Models and Four Directions for Research (Panadero, 2017)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5408091/",
+  "type": "review",
+  "relevance": "Synthesizes Zimmerman/Winne-Hadwin/Pintrich SRL phases \u2192 structured schema of forethought/monitoring/reflection acts to annotate transcripts and engineer phase-coverage features."
+ },
+ {
+  "title": "Greene & Azevedo (2007) \u2014 A Theoretical Review of Winne & Hadwin's COPES Model of SRL",
+  "url": "https://ssrlsig.org/wp-content/uploads/2018/01/greene-azevedo-2007-a-theor-review-of-winne-and-hadwins-model-of-srl.pdf",
+  "type": "review",
+  "relevance": "COPES (conditions/operations/products/evaluations/standards) \u2192 maps each dialogue move to a regulatory operation; monitoring-density feature per problem."
+ },
+ {
+  "title": "Aleven & Koedinger \u2014 Investigations into Help Seeking and Learning with a Cognitive Tutor",
+  "url": "https://pact.cs.cmu.edu/koedinger/pubs/Aleven%20Koedinger%2001.pdf",
+  "type": "paper",
+  "relevance": "Links help-request patterns and prior knowledge to learning outcomes \u2192 features: hint-request rate, timing relative to errors, help-then-retry success."
+ },
+ {
+  "title": "Roll, Aleven, McLaren & Koedinger \u2014 Improving Students' Help-Seeking Skills Using Metacognitive Feedback",
+  "url": "https://pact.cs.cmu.edu/koedinger/pubs/Roll%20JLI.pdf",
+  "type": "paper",
+  "relevance": "Operationalizes a (meta)cognitive help-seeking model with rules for good/bad help acts \u2192 rule-based features flagging help abuse/avoidance in a transcript."
+ },
+ {
+  "title": "Baker, Corbett, Roll & Koedinger \u2014 Detection and Analysis of Off-Task Gaming Behavior in ITS",
+  "url": "http://web.cs.wpi.edu/~nth/pubs_and_grants/papers/2006/ITS2006_detection.pdf",
+  "type": "paper",
+  "relevance": "Machine-learned gaming detector using speed/error/hint patterns \u2192 transferable behavioral features (rapid guessing, hint drilling) that suppress correctness."
+ },
+ {
+  "title": "Baker & Rossi (2013) \u2014 Assessing the Disengaged Behaviors of Learners",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/BakerRossi2013.pdf",
+  "type": "review",
+  "relevance": "Catalog of disengagement (gaming, off-task, carelessness) and their detectors \u2192 engagement-state feature set; carelessness explains wrong answers despite mastery."
+ },
+ {
+  "title": "Roediger & Karpicke (2006) \u2014 The Power of Testing Memory: Basic Research and Implications for Practice",
+  "url": "http://psychnet.wustl.edu/memory/wp-content/uploads/2018/04/Roediger-Karpicke-2006_PPS.pdf",
+  "type": "paper",
+  "relevance": "Retrieval practice > restudy for retention \u2192 feature: whether the target skill was actively retrieved earlier in the session (not just shown/told) predicts next-question correctness."
+ },
+ {
+  "title": "Karpicke & Roediger (2007) \u2014 Repeated Retrieval During Learning Is the Key to Long-Term Retention",
+  "url": "https://learninglab.psych.purdue.edu/downloads/2007/2007_Karpicke_Roediger_JML.pdf",
+  "type": "paper",
+  "relevance": "Number/spacing of successful retrievals drives retention \u2192 feature: count of prior correct retrievals and spacing of the skill within the transcript."
+ },
+ {
+  "title": "Kapur \u2014 Productive Failure in Learning the Concept of Variance",
+  "url": "https://escholarship.org/content/qt16f7z2zq/qt16f7z2zq_noSplash_c1ea25a7bef003a69ba2e79f885b1d0a.pdf",
+  "type": "paper",
+  "relevance": "Pre-instruction struggle/impasse can boost later success \u2192 feature: presence of a productive-impasse episode (generate-explore then consolidate) preceding the assessment item."
+ },
+ {
+  "title": "Kapur & Roll \u2014 Productive Failure (overview chapter)",
+  "url": "https://boldscience.org/wp-content/uploads/2025/04/Productive-Failure.pdf",
+  "type": "review",
+  "relevance": "Four core mechanisms of productive failure \u2192 non-monotonic feature: early errors + reflection may positively, not negatively, predict the next answer."
+ },
+ {
+  "title": "A Comprehensive Survey on Deep Learning Techniques in Educational Data Mining (2023)",
+  "url": "https://arxiv.org/abs/2309.04761",
+  "type": "review",
+  "relevance": "Maps DKT/AKT/transformer KT architectures and inputs \u2192 menu of sequence-model backbones and interaction encodings for correctness prediction."
+ },
+ {
+  "title": "A Survey of Explainable Knowledge Tracing (2024)",
+  "url": "https://arxiv.org/abs/2403.07279",
+  "type": "review",
+  "relevance": "Interpretable KT feature families (skill mastery estimates, attention over past items) \u2192 interpretable, tutor-agnostic features to add alongside a black-box model."
+ },
+ {
+  "title": "MetaCLASS: Metacognitive Coaching for Learning with Adaptive Self-Regulation Support (2026)",
+  "url": "https://arxiv.org/abs/2602.02457",
+  "type": "paper",
+  "relevance": "Defines 11 interpretable metacognitive coaching moves (incl. 'stay silent') tied to SRL \u2192 move-taxonomy features; also flags that intervention density is itself a signal."
+ },
+ {
+  "title": "Self-Regulated Learning Processes in Secondary Education: A Network Analysis of Trace-Based Measures (2024)",
+  "url": "https://arxiv.org/abs/2412.08921",
+  "type": "paper",
+  "relevance": "Builds SRL-process networks from fine-grained traces \u2192 feature: transition patterns between regulatory acts (e.g., monitor\u2192revise) rather than isolated act counts."
+ },
+ {
+  "title": "Process Mining for Self-Regulated Learning Assessment in e-Learning (2024)",
+  "url": "https://arxiv.org/abs/2403.12068",
+  "type": "paper",
+  "relevance": "Inductive-Miner SRL process models differentiate pass vs fail students \u2192 feature: conformance of a session's act-sequence to a 'successful-learner' process model."
+ },
+ {
+  "title": "Using Think-Aloud Data to Understand Relations Between Self-Regulation Cycle Characteristics and Student Performance in ITS (2023)",
+  "url": "https://arxiv.org/abs/2312.05675",
+  "type": "paper",
+  "relevance": "Relates completeness/quality of SRL cycles to performance \u2192 feature: whether a full plan-monitor-evaluate cycle occurred before the assessment item."
+ },
+ {
+  "title": "Understanding Gaming the System by Analyzing Self-Regulated Learning in Think-Aloud Protocols (LAK 2026)",
+  "url": "https://arxiv.org/abs/2601.04487",
+  "type": "paper",
+  "relevance": "Recasts gaming as maladaptive SRL (long utterances, error recognition, low planning) \u2192 verbal features distinguishing shallow gaming from genuine reasoning in transcripts."
+ },
+ {
+  "title": "Analyzing Adaptive Scaffolds That Help Students Develop Self-Regulated Learning Behaviors (2022)",
+  "url": "https://arxiv.org/abs/2202.09698",
+  "type": "paper",
+  "relevance": "Shows which scaffold-response patterns build SRL \u2192 feature: student uptake of scaffolds (acts on hint/prompt vs ignores) as a mediator of next-item success."
+ },
+ {
+  "title": "MiBoard: iSTART Metacognitive Training Through Gaming (self-explanation auto-scoring lineage)",
+  "url": "https://arxiv.org/abs/1009.2205",
+  "type": "paper",
+  "relevance": "Describes automated evaluation of self-explanation quality (word-match/LSA/topic models) \u2192 pipeline for scoring a student's explanation turn into a numeric quality feature."
+ },
+ {
+  "title": "Exploring the Effectiveness of Using LLMs for Automated Assessment of Student Self-Explanations in Programming Education (2026)",
+  "url": "https://arxiv.org/abs/2605.21614",
+  "type": "paper",
+  "relevance": "Benchmarks LLM vs semantic-similarity scoring of student self-explanations \u2192 concrete method to convert free-text self-explanations into a correctness-predictive quality score."
+ },
+ {
+  "title": "Identifying and Mitigating Answer Bias in Knowledge Tracing",
+  "url": "https://arxiv.org/abs/2308.07779",
+  "type": "paper",
+  "relevance": "Warns that KT models exploit answer-label bias; motivates debiasing/regularization crucial for a near-noise correctness-prediction task."
+ },
+ {
+  "title": "Language Model Can Do Knowledge Tracing (LKT)",
+  "url": "https://arxiv.org/abs/2406.02893",
+  "type": "paper",
+  "relevance": "Injects pretrained LM embeddings of question/concept text into KT, letting the semantic content of the next problem inform the prediction."
+ },
+ {
+  "title": "Automated Knowledge Concept Annotation and Question Representation Learning for Knowledge Tracing",
+  "url": "https://arxiv.org/abs/2410.01727",
+  "type": "paper",
+  "relevance": "LLM auto-labels the knowledge component of each turn/question, giving per-turn KC tags without a hand-authored Q-matrix."
+ },
+ {
+  "title": "Academic Literacy in Mathematics for English Learners (Moschkovich, 2015)",
+  "url": "https://escholarship.org/content/qt3b61n1wd/qt3b61n1wd.pdf",
+  "type": "paper",
+  "relevance": "Theory of the mathematical register: use of specialized vocabulary, justification and explanation are language markers of understanding to extract from student turns."
+ },
+ {
+  "title": "Understanding Student Language: An Unsupervised Dialogue Act Classification",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1115297.pdf",
+  "type": "paper",
+  "relevance": "Unsupervised clustering of student utterances into dialogue acts; the distribution of student act types (question/short-answer/substantive) is a feature."
+ },
+ {
+  "title": "Diagnosing Bugs in a Simple Procedural Skill (Burton; Brown & Burton buggy models)",
+  "url": "https://exquisitive.com/library/DiagnosingBugsSimpleProceduralSkill.pdf",
+  "type": "paper",
+  "relevance": "Systematic 'bugs' as discrete perturbations of a correct procedure: match student errors to a bug library to produce error-type indicator features."
+ },
+ {
+  "title": "A Revaluation of Newman's Error Analysis (White, 2009)",
+  "url": "https://www.mav.vic.edu.au/Tenant/C0000019/00000001/downloads/Resources/annual-conferences/2009/08White.pdf",
+  "type": "paper",
+  "relevance": "Five-stage error taxonomy (reading/comprehension/transformation/process/encoding) lets you feature which stage a student's error falls in."
+ },
+ {
+  "title": "Results and Insights from Diagnostic Questions: The NeurIPS 2020 Education Challenge (Eedi)",
+  "url": "https://arxiv.org/abs/2104.04034",
+  "type": "dataset",
+  "relevance": "20M MCQ answers whose distractors encode misconceptions; which distractor is chosen is a misconception signal plus large-scale correctness-prediction baselines."
+ },
+ {
+  "title": "Do LLMs Make Mistakes Like Students? Exploring Natural Alignment between Language Models and Human Error Patterns",
+  "url": "https://arxiv.org/abs/2502.15140",
+  "type": "paper",
+  "relevance": "LLM answer-option perplexity aligns with human error patterns, so LLM likelihood over answer choices is a difficulty/misconception proxy feature."
+ },
+ {
+  "title": "Cognitive-Uncertainty Guided Knowledge Distillation for Accurate Classification of Student Misconceptions",
+  "url": "https://arxiv.org/abs/2605.14752",
+  "type": "paper",
+  "relevance": "Classifies the specific misconception behind a student response with uncertainty-aware distillation; predicted misconception label + confidence become features."
+ },
+ {
+  "title": "Decision Tree Modeling of Wheel-Spinning and Productive Persistence in Skill Builders",
+  "url": "https://zenodo.org/records/3344873",
+  "type": "paper",
+  "relevance": "Detects unproductive persistence: attempt counts, time-on-skill and repeated-error streaks predict continued failure, i.e. a likely incorrect next answer."
+ },
+ {
+  "title": "MathTutorBench: A Benchmark for Measuring Open-ended Pedagogical Capabilities of LLM Tutors",
+  "url": "https://arxiv.org/abs/2502.18940",
+  "type": "dataset",
+  "relevance": "Benchmark of tutor mistake-diagnosis and scaffolding skills, supplying pedagogically-labeled dialogues to derive tutor-move features and evaluation dimensions."
+ },
+ {
+  "title": "Simulating Students with Large Language Models: A Review of Architecture, Mechanisms, and Role Modelling",
+  "url": "https://arxiv.org/abs/2511.06078",
+  "type": "review",
+  "relevance": "How to generate synthetic student trajectories/errors for data augmentation and cold-start of a correctness predictor, with caveats on validity."
+ },
+ {
+  "title": "A Selective Review of Affect-Sensitive Instructional Strategies (D'Mello, Blanchard, Baker, Ocumpaugh, Brawner)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/dmello-arl14-affect.pdf",
+  "type": "review",
+  "relevance": "Catalogs which affect states help vs hurt learning and valid responses; supplies label priors/sign for a tutor-agnostic affect\u2192next-correct model."
+ },
+ {
+  "title": "More Confusion and Frustration, Better Learning: The Impact of Erroneous Examples (Richey et al., 2019)",
+  "url": "https://www.cs.cmu.edu/~bmclaren/pubs/RicheyEtAl-MoreConfusionAndFrustrationBetterLearningImpactOfErrEx-CompAndEd2019.pdf",
+  "type": "paper",
+  "relevance": "Induced confusion/frustration raised learning; feature = count and resolution of error-driven confusion episodes as a positive predictor of next-item success."
+ },
+ {
+  "title": "Emotional Learning Analytics (HLA Handbook Ch.12, D'Mello & Jensen)",
+  "url": "https://solaresearch.org/wp-content/uploads/hla22/HLA22_Chapter_12_Dmello.pdf",
+  "type": "book",
+  "relevance": "Survey of sensor-free affect detection from log/text; blueprint for building transcript-only, tutor-agnostic affect features."
+ },
+ {
+  "title": "Affective States and State Tests: How Affect/Engagement Predict End-of-Year Learning (Pardos, Baker, San Pedro, Gowda, Gowda)",
+  "url": "https://files.eric.ed.gov/fulltext/EJ1127034.pdf",
+  "type": "paper",
+  "relevance": "Session-level fractions of boredom/engagement/confusion/frustration predict test scores; feature = affect proportions, with context-dependent sign (boredom hurts in problem-solving, not in scaffolding)."
+ },
+ {
+  "title": "From Reaction to Anticipation: Predicting Future Affect (Zambrano, Baker, Baral, Heffernan, Lan, EDM 2024)",
+  "url": "https://doi.org/10.5281/zenodo.12729886",
+  "type": "paper",
+  "relevance": "Confusion/frustration/boredom predictable tens of seconds ahead from logs; feature = short-horizon affect forecasts as leading indicators of the next error."
+ },
+ {
+  "title": "Carelessness and Affect in an Intelligent Tutoring System for Mathematics (San Pedro, Baker et al.)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/AIED-D-13-00017_Revised%20v2.pdf",
+  "type": "paper",
+  "relevance": "Contextual-slip detector separates 'knows-but-slipped' from 'doesn't-know'; feature = per-response slip probability to de-noise next-correct labels."
+ },
+ {
+  "title": "Carelessness Detection using Performance Factor Analysis (Zhang, Baker, Srivastava, Ocumpaugh, Mills, McLaren, 2025)",
+  "url": "https://arxiv.org/abs/2503.04737",
+  "type": "paper",
+  "relevance": "New carelessness operationalization; feature = response-time \u00d7 prior-success interaction to flag careless errors that otherwise mislead a correctness model."
+ },
+ {
+  "title": "Detecting/Developing a Generalizable Detector of When Students Game the System (Baker, Corbett, Roll, Koedinger, 2008)",
+  "url": "https://pact.cs.cmu.edu/pubs/Baker,Corbett,%20Roll%20&%20Koedinger%2008.pdf",
+  "type": "paper",
+  "relevance": "Latency + rapid-guess + hint-abuse features for gaming; behavioral signals that both cause and predict non-mastery on the next item."
+ },
+ {
+  "title": "BROMP Quantitative Field Observations: A Review (Ocumpaugh, Baker, Rodrigo)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/BROMPbookchapter.pdf",
+  "type": "review",
+  "relevance": "Standardized affect/behavior label scheme and observable cue lists; defines target categories and ground-truth protocol for training detectors."
+ },
+ {
+  "title": "DAiSEE: Dataset for Affective States in E-Environments (boredom/confusion/engagement/frustration, in the wild)",
+  "url": "https://people.iith.ac.in/vineethnb/resources/daisee/index.html",
+  "type": "dataset",
+  "relevance": "Labeled in-the-wild affect video; transfer-learning source and a concrete four-state affect ontology to reuse for transcript-aligned labels."
+ },
+ {
+  "title": "EmotiW 2018: Audio-Video, Student Engagement and Group-Level Affect Prediction (Dhall et al.)",
+  "url": "https://arxiv.org/abs/1808.07773",
+  "type": "dataset",
+  "relevance": "Engagement-in-the-wild benchmark; baseline temporal-video engagement features and evaluation setup for ordinal engagement."
+ },
+ {
+  "title": "Improving SOTA in Detecting Student Engagement with ResNet and TCN Hybrid Network",
+  "url": "https://arxiv.org/abs/2104.10122",
+  "type": "paper",
+  "relevance": "Temporal CNN over frame features; a sequence-modeling template for aggregating per-moment engagement across a whole session."
+ },
+ {
+  "title": "Engagement Measurement Based on Facial Landmarks and Spatial-Temporal Graph Convolutional Networks",
+  "url": "https://arxiv.org/abs/2403.17175",
+  "type": "paper",
+  "relevance": "Landmark-graph features give a low-dimensional, identity-robust engagement signal\u2014useful if any behavioral/timing analog is available per turn."
+ },
+ {
+  "title": "A General Model for Detecting Learner Engagement: Implementation and Evaluation",
+  "url": "https://arxiv.org/abs/2405.04251",
+  "type": "paper",
+  "relevance": "Cross-dataset generalizable engagement model; directly addresses the tutor-agnostic transfer problem central to our task."
+ },
+ {
+  "title": "Inconsistencies in the Definition and Annotation of Student Engagement in Virtual Learning Datasets: A Critical Review",
+  "url": "https://arxiv.org/abs/2208.04548",
+  "type": "review",
+  "relevance": "Documents label noise/construct-validity issues in engagement labels; informs robust-label training and metric choice for our near-noise prediction problem."
+ },
+ {
+  "title": "Early Detection of Wheel Spinning: Comparison across Tutors, Models, Features, Operationalizations (Zhang et al., EDM 2019)",
+  "url": "https://files.eric.ed.gov/fulltext/ED594575.pdf",
+  "type": "paper",
+  "relevance": "Predicts eventual non-mastery from the first few opportunities across multiple tutors; feature = early struggle-streak signals that generalize tutor-to-tutor."
+ },
+ {
+  "title": "Developing Early Detectors of Student Attrition and Wheel Spinning Using Deep Learning (Botelho, Varatharaj, Patikorn, Doherty, Adjei, Beck, 2019)",
+  "url": "https://par.nsf.gov/servlets/purl/10095357",
+  "type": "paper",
+  "relevance": "RNN over the raw action sequence for wheel-spinning/attrition; end-to-end sequence representation feeding next-outcome prediction."
+ },
+ {
+  "title": "The Role of Mastery Learning in Intelligent Tutoring Systems: Principal Stratification on a Latent Variable",
+  "url": "https://arxiv.org/abs/1707.09308",
+  "type": "paper",
+  "relevance": "Causal framing of mastery vs mere practice; guards against confounds when correlating in-session behavior with next-correct outcomes."
+ },
+ {
+  "title": "Extending Deep Knowledge Tracing: Inferring Interpretable Knowledge and Predicting Post-System Performance",
+  "url": "https://arxiv.org/abs/1910.12597",
+  "type": "paper",
+  "relevance": "DKT variant that predicts downstream/held-out performance rather than in-loop\u2014closer to our 'next assessment question' target."
+ },
+ {
+  "title": "Ensembling LLMs to Characterize Affective Dynamics in Student-AI Tutor Dialogues (Zhang, Alghowinem, Breazeal, ACII 2025)",
+  "url": "https://arxiv.org/abs/2510.13862",
+  "type": "paper",
+  "relevance": "Zero-shot LLM valence/arousal/learning-helpfulness + emotion labels per turn, rank-weighted fused\u2014a ready-made transcript affect feature extractor for our model."
+ },
+ {
+  "title": "Tutor CoPilot: A Human-AI Approach for Scaling Real-Time Expertise",
+  "url": "https://arxiv.org/abs/2410.03017",
+  "type": "paper",
+  "relevance": "Identifies effective real-time tutoring moves linked to gains; move-type and timing features to extract from dialogue as outcome predictors."
+ },
+ {
+  "title": "Dropout Prediction over Weeks in MOOCs by Learning Representations of Clicks and Videos",
+  "url": "https://arxiv.org/abs/2002.01955",
+  "type": "paper",
+  "relevance": "Learns sequence representations of interaction to predict disengagement/attrition\u2014representation-learning template for encoding a whole session transcript."
+ },
+ {
+  "title": "Enhancing Online Learning by Integrating Biosensors and Multimodal Learning Analytics for Detecting and Predicting Student Behavior: A Review",
+  "url": "https://arxiv.org/abs/2509.07742",
+  "type": "review",
+  "relevance": "Inventory of modalities, features, and fusion strategies for detecting and predicting behavior\u2014menu of candidate signals to approximate from text-only logs."
+ },
+ {
+  "title": "Measuring the Impact of Student Gaming Behaviors on Learner Modeling",
+  "url": "https://arxiv.org/abs/2512.18659",
+  "type": "paper",
+  "relevance": "Quantifies how gaming corrupts knowledge estimates; motivates gaming-aware masking/features to reduce label noise when predicting next-question correctness."
+ },
+ {
+  "title": "Wood, Bruner & Ross (1976), The Role of Tutoring in Problem Solving",
+  "url": "https://sachafund.wordpress.com/wp-content/uploads/2018/10/wood_et_al-1976-journal_of_child_psychology_and_psychiatry.pdf",
+  "type": "paper",
+  "relevance": "Scaffolding/ZPD theory yields features counting the six scaffolding functions (task simplification, marking critical features, frustration control) and whether support is faded before the next question."
+ },
+ {
+  "title": "Stasaski et al. (2020), CIMA: A Large Open Access Dialogue Dataset for Tutoring",
+  "url": "https://aclanthology.org/2020.bea-1.5/",
+  "type": "dataset",
+  "relevance": "Tutoring dialogues with labeled tutor response types and grounded concepts; supply gold tutor-move labels to train move-classifiers used as transcript features."
+ },
+ {
+  "title": "Caines et al. (2020/2022), The Teacher-Student Chatroom Corpus (TSCC)",
+  "url": "https://aclanthology.org/2022.nlp4call-1.3.pdf",
+  "type": "dataset",
+  "relevance": "Authentic ESL teacher-student chat with proficiency assessment; tutor-agnostic dialogue-act and repair patterns transferable as features across subjects."
+ },
+ {
+  "title": "Enhancing Talk Moves Analysis in Mathematics Tutoring through Classroom Teaching Discourse (COLING 2025)",
+  "url": "https://aclanthology.org/2025.coling-main.513/",
+  "type": "paper",
+  "relevance": "Accountable-Talk 'talk move' classifiers (student and tutor) give per-turn categorical features (making a claim, providing evidence, revoicing) predictive of understanding."
+ },
+ {
+  "title": "Kwon et al. (2024), BIPED: Pedagogically Informed Tutoring System for ESL Education",
+  "url": "https://arxiv.org/abs/2406.03486",
+  "type": "dataset",
+  "relevance": "Defines 34 tutor acts and 9 student acts with a labeled corpus; a rich dialogue-act taxonomy to featurize each turn of a transcript."
+ },
+ {
+  "title": "LearnLM Team, Google (2024), LearnLM: Improving Gemini for Learning",
+  "url": "https://arxiv.org/abs/2412.16429",
+  "type": "paper",
+  "relevance": "'Pedagogical instruction following' attributes (encourage active learning, manage load, stimulate curiosity, adapt) give a checklist of tutor-behavior features to detect in transcripts."
+ },
+ {
+  "title": "Wang et al. (2024), Bridging the Novice-Expert Gap via Models of Decision-Making: Remediating Math Mistakes (Bridge)",
+  "url": "https://arxiv.org/abs/2310.10648",
+  "type": "paper",
+  "relevance": "Decompose each remediation into (error, strategy, intention); these decision-model labels become structured features characterizing how a mistake was addressed before the next item."
+ },
+ {
+  "title": "Yan et al. (2023), Practical and Ethical Challenges of LLMs in Education: A Systematic Scoping Review",
+  "url": "https://arxiv.org/abs/2303.13379",
+  "type": "review",
+  "relevance": "Landscape and caveats (bias, reliability, over-reliance) to scope realistic, generalizable signal and avoid tutor-specific leakage in a near-noise prediction task."
+ },
+ {
+  "title": "qDKT: Question-centric Deep Knowledge Tracing (Sonkar et al., 2020)",
+  "url": "https://arxiv.org/abs/2005.12442",
+  "type": "paper",
+  "relevance": "Track at question granularity (not just skill) with Laplacian smoothing across similar items, handling sparse per-question history in a transcript."
+ },
+ {
+  "title": "Modeling Individualization in a Bayesian Networks Implementation of Knowledge Tracing (Pardos & Heffernan, 2010)",
+  "url": "https://people.csail.mit.edu/zp/papers/UMAP_final.pdf",
+  "type": "paper",
+  "relevance": "Prior-per-student (P-init) node to seed a first-question-correct-probability feature before any in-session evidence accrues."
+ },
+ {
+  "title": "Instructional Factors Analysis (Chi, Koedinger, Gordon, et al.)",
+  "url": "https://www.cs.cmu.edu/~ggordon/chi-etal-ifa.pdf",
+  "type": "paper",
+  "relevance": "Logistic model separating effects of prior successes, failures, and instructional/tell events (like tutor hints) on next-attempt success \u2014 direct transcript-event features."
+ },
+ {
+  "title": "Using an Additive Factor Model and Performance Factor Analysis to Assess Learning Gains (Shi & Pavlik, EDM 2017)",
+  "url": "http://educationaldatamining.org/EDM2017/proc_files/papers/paper_98.pdf",
+  "type": "paper",
+  "relevance": "AFM/PFA logistic features: per-skill opportunity count and cumulative success/failure counts as cheap, theory-grounded correctness predictors."
+ },
+ {
+  "title": "R2DE: A NLP Approach to Estimating IRT Parameters of Newly Generated Questions (Benedetto et al., LAK 2020)",
+  "url": "https://arxiv.org/abs/2001.07569",
+  "type": "paper",
+  "relevance": "Regress IRT difficulty/discrimination from question + option text to solve the cold-start when the next item has no response history."
+ },
+ {
+  "title": "A Quantitative Study of NLP Approaches to Question Difficulty Estimation (Benedetto, 2023)",
+  "url": "https://arxiv.org/abs/2305.10236",
+  "type": "paper",
+  "relevance": "Benchmarks Transformer vs TF-IDF/word2vec/linguistic features across domains \u2014 guidance on which text-difficulty encoder to bolt onto the next question."
+ },
+ {
+  "title": "Item Difficulty Prediction Using Item Text Features: Comparison Across ML Algorithms (\u0160t\u011bp\u00e1nek et al., Mathematics 2023, open access)",
+  "url": "https://www.mdpi.com/2227-7390/11/19/4104",
+  "type": "paper",
+  "relevance": "Concrete engineered text-feature set (length, syllables, POS, embeddings) with elastic-net winning \u2014 a compact difficulty-feature block."
+ },
+ {
+  "title": "Estimating Item Difficulty Using LLMs and Tree-Based ML Algorithms (2025)",
+  "url": "https://arxiv.org/abs/2504.08804",
+  "type": "paper",
+  "relevance": "Have an LLM extract cognitive/linguistic difficulty features from item text, then feed random-forest/GBM \u2014 a response-free difficulty prior for the next question."
+ },
+ {
+  "title": "The Impact of Item-Writing Flaws on Difficulty and Discrimination in IRT (2025)",
+  "url": "https://arxiv.org/abs/2503.10533",
+  "type": "paper",
+  "relevance": "Item-writing-flaw rubric scores (ambiguity, negation, implausible distractors) as pre-deployment textual features correlated with empirical difficulty."
+ },
+ {
+  "title": "NLP Methods May Actually Be Better Than Professors at Estimating Question Difficulty (2025)",
+  "url": "https://arxiv.org/abs/2508.03294",
+  "type": "paper",
+  "relevance": "Evidence that automated text-difficulty estimates beat expert judgment \u2014 supports trusting a model-derived difficulty feature over heuristics."
+ },
+ {
+  "title": "Are You Doubtful? Model Uncertainty for Question Difficulty Estimation (2024)",
+  "url": "https://arxiv.org/abs/2412.11831",
+  "type": "paper",
+  "relevance": "Use an LLM's answer-probability/entropy on the item as a proxy difficulty signal that predicts whether a student will get it right."
+ },
+ {
+  "title": "Beyond Flesch-Kincaid: Prompt-based Metrics Improve Difficulty Classification of Educational Texts (2024)",
+  "url": "https://arxiv.org/abs/2405.09482",
+  "type": "paper",
+  "relevance": "Replace shallow readability indices with prompt-based semantic-difficulty scores as a stronger linguistic-complexity feature for the question stem."
+ },
+ {
+  "title": "Psychometric Alignment: Capturing Human Knowledge Distributions via Language Models (2024)",
+  "url": "https://arxiv.org/abs/2407.15645",
+  "type": "paper",
+  "relevance": "Measures how well an LM reproduces the human difficulty/ability distribution \u2014 a validation lens and a way to calibrate simulated-student difficulty features."
+ },
+ {
+  "title": "Lost in Benchmarks? Rethinking LLM Benchmarking with Item Response Theory (2025)",
+  "url": "https://arxiv.org/abs/2505.15055",
+  "type": "paper",
+  "relevance": "Large-scale IRT fitting recipe (ability, difficulty, discrimination) over item-response matrices, transferable to fitting per-student/per-item params from transcripts."
+ },
+ {
+  "title": "Large Language Model Psychometrics: A Systematic Review (2025)",
+  "url": "https://arxiv.org/abs/2505.08245",
+  "type": "review",
+  "relevance": "Survey of psychometric constructs (latent ability, reliability, validity) and how to operationalize them as model features/evaluation for ability estimation."
+ },
+ {
+  "title": "Deep Computerized Adaptive Testing (2025)",
+  "url": "https://arxiv.org/abs/2502.19275",
+  "type": "paper",
+  "relevance": "Fisher-information item selection and ability-tracking from sparse responses \u2014 informs how to weight the most-informative prior turns when estimating current ability."
+ },
+ {
+  "title": "Early Detection of Wheel-Spinning in ASSISTments (Botelho, Baker, et al.)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/paper_45a.pdf",
+  "type": "paper",
+  "relevance": "Unproductive-persistence detector from first few attempts (consecutive failures) \u2014 a struggling-student feature predicting continued incorrectness."
+ },
+ {
+  "title": "Pushing on Text Readability Assessment: A Transformer Meets Handcrafted Linguistic Features (Lee, Jang & Lee, 2021)",
+  "url": "https://arxiv.org/abs/2109.12258",
+  "type": "paper",
+  "relevance": "Fuse Transformer embeddings with handcrafted linguistic-complexity features \u2014 a hybrid encoder for scoring the difficulty of the next question's text."
+ },
+ {
+  "title": "M-Powering Teachers: NLP-Powered Feedback Improves 1:1 Instruction and Student Outcomes (Demszky et al., L@S 2023)",
+  "url": "https://edworkingpapers.com/sites/default/files/ai23-759-v2.pdf",
+  "type": "paper",
+  "relevance": "Shows three cheap, validated dialogic metrics (uptake of student ideas, tutor talk-time share, question rate) causally move outcomes; use all three as session-level features."
+ },
+ {
+  "title": "Dialogue Act Modeling for Automatic Tagging and Recognition of Conversational Speech (Stolcke, Jurafsky et al., Comp. Linguistics 2000)",
+  "url": "https://arxiv.org/abs/cs/0006023",
+  "type": "paper",
+  "relevance": "Foundational HMM over dialogue-act sequences with lexical/prosodic cues; motivates modeling the transcript as a DA n-gram/sequence and using DA-transition features (e.g., question->answer->uptake)."
+ },
+ {
+  "title": "Does Informativeness Matter? Active Learning for Educational Dialogue Act Classification (Lin et al., 2023)",
+  "url": "https://arxiv.org/abs/2304.05578",
+  "type": "paper",
+  "relevance": "Educational DA classifier plus sample-informativeness; yields a labeled DA feature stream and a way to prioritize which utterances carry the most signal about student state."
+ },
+ {
+  "title": "Robust Educational Dialogue Act Classifiers with Low-Resource and Imbalanced Datasets (Lin et al., AIED 2023)",
+  "url": "https://arxiv.org/abs/2304.07499",
+  "type": "paper",
+  "relevance": "Recipes for training DA classifiers on small, skewed tutoring data; directly usable to build the per-utterance tutor/student act-tagging feature extractor for our pipeline."
+ },
+ {
+  "title": "Automated Classification of Tutors' Dialogue Acts Using Generative AI: A Case Study on the CIMA Corpus (2025)",
+  "url": "https://arxiv.org/abs/2509.09125",
+  "type": "paper",
+  "relevance": "Zero/few-shot LLM tagging of tutor moves (question/hint/correction/confirmation); gives a no-train feature extractor for tutor-move distributions preceding each assessment item."
+ },
+ {
+  "title": "IntrEx: A Dataset for Modeling Engagement in Educational Conversations (Findings EMNLP 2025)",
+  "url": "https://arxiv.org/abs/2509.06652",
+  "type": "dataset",
+  "relevance": "Links linguistic/cognitive drivers (concreteness, readability, uptake) to turn-level interestingness; supplies computable engagement features hypothesized to precede better performance."
+ },
+ {
+  "title": "Why Do Only Some Events Cause Learning During Human Tutoring? (VanLehn et al., Cognition & Instruction 2003)",
+  "url": "https://www.researchgate.net/publication/248439283_Why_Do_Only_Some_Events_Cause_Learning_During_Human_Tutoring",
+  "type": "paper",
+  "relevance": "Impasse hypothesis: learning follows student impasses/errors, not tutor explanations per se; feature = detect impasse/error events (and whether they were resolved) before the assessment item."
+ },
+ {
+  "title": "Coh-Metrix: Analysis of Text on Cohesion and Language (Graesser, McNamara et al., 2004)",
+  "url": "https://link.springer.com/content/pdf/10.3758/BF03195564.pdf",
+  "type": "paper",
+  "relevance": "Battery of cohesion/coherence/referential/causal indices; run over student turns to get lexical-sophistication and coherence features that correlate with comprehension/correctness."
+ },
+ {
+  "title": "The Development and Analysis of Tutorial Dialogues in AutoTutor Lite (Graesser et al., 2011, PMC)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3748232/",
+  "type": "paper",
+  "relevance": "Expectation-misconception tailoring and deep- vs shallow-question effects (deep questions yield larger gains); feature = depth/type of questions posed and expectation-coverage of student answers."
+ },
+ {
+  "title": "Survey of Natural Language Processing for Education: Taxonomy, Systematic Review, and Future Trends (2024)",
+  "url": "https://arxiv.org/abs/2401.07518",
+  "type": "review",
+  "relevance": "Landscape of educational-NLP tasks and methods; a checklist for candidate feature families (assessment, QG, error correction) and modeling patterns to borrow."
+ },
+ {
+  "title": "Predicting Short Response Ratings with Non-Content Related Features: A Hierarchical Modeling Approach (2024)",
+  "url": "https://arxiv.org/abs/2405.08574",
+  "type": "paper",
+  "relevance": "Shows non-content signals (length, structure, timing) predict response quality; a near-noise analog arguing to include cheap surface/behavioral features and to model student-level random effects."
+ },
+ {
+  "title": "Survey on Automated Short Answer Grading with Deep Learning (Bonthu et al., 2022)",
+  "url": "https://arxiv.org/abs/2204.03503",
+  "type": "review",
+  "relevance": "Semantic-similarity and neural correctness-scoring methods for free-text answers; supplies features (overlap/embedding similarity to reference) when the transcript contains the student's attempted answer."
+ },
+ {
+  "title": "Studying Alignment in a Collaborative Learning Activity via Automatic Methods (Rajkumar et al., 2021)",
+  "url": "https://arxiv.org/abs/2104.04429",
+  "type": "paper",
+  "relevance": "Automatic lexical/syntactic alignment measures predict learning gains; compute student-tutor linguistic convergence over the session as a tutor-agnostic performance signal."
+ },
+ {
+  "title": "Assessing the Efficacy of LLMs in Generating Accurate Teacher Responses (BEA 2023 Shared Task, Baladon et al.)",
+  "url": "https://arxiv.org/abs/2307.04274",
+  "type": "paper",
+  "relevance": "Benchmarks what makes a 'good' next tutor turn on the chatroom corpus; the response-quality metrics double as features scoring the tutor turn that precedes each student answer."
+ },
+ {
+  "title": "Learning meets Assessment: On IRT and Bayesian Knowledge Tracing (Deonovic et al., 2018)",
+  "url": "https://arxiv.org/abs/1803.05926",
+  "type": "paper",
+  "relevance": "Unifies IRT ability estimation with BKT learning dynamics \u2014 supports using a running student-ability and item-difficulty estimate as features."
+ },
+ {
+  "title": "Contextual Slip and Prediction of Student Performance (Baker, Corbett & Aleven, 2008)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/BC-v26.pdf",
+  "type": "paper",
+  "relevance": "Estimates guess/slip contextually per action rather than as constants \u2014 feature idea: predicted slip/guess likelihood from local behavior around a turn."
+ },
+ {
+  "title": "Applications of the Elo Rating System in Adaptive Educational Systems (Pel\u00e1nek et al., 2016)",
+  "url": "https://www.fi.muni.cz/~xpelanek/publications/CAE-elo.pdf",
+  "type": "paper",
+  "relevance": "Online Elo skill/difficulty updated per response (with response-time scoring) \u2014 a lightweight running ability and item-difficulty feature computable on the fly."
+ },
+ {
+  "title": "A Trainable Spaced Repetition Model for Language Learning / Half-Life Regression (Settles & Meeder, 2016)",
+  "url": "https://research.duolingo.com/papers/settles.acl16.pdf",
+  "type": "paper",
+  "relevance": "Estimates memory half-life from lag time and prior correct/incorrect counts \u2014 yields a recall-probability feature for whether a previously-seen item is retained."
+ },
+ {
+  "title": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis (Cepeda et al., 2006)",
+  "url": "https://augmentingcognition.com/assets/Cepeda2006.pdf",
+  "type": "review",
+  "relevance": "Spacing/lag interacts with retention interval \u2014 motivates encoding time-since-last-practice and spacing-gap features (not just counts) as correctness predictors."
+ },
+ {
+  "title": "Enhancing Human Learning via Spaced Repetition Optimization (Tabibian et al., 2019, PNAS)",
+  "url": "https://www.pnas.org/doi/pdf/10.1073/pnas.1815156116",
+  "type": "paper",
+  "relevance": "Memory-model + optimal review timing (marginal recall gain) \u2014 feature idea: expected recall at the moment the next question is posed given review history."
+ },
+ {
+  "title": "Adaptive Forgetting Curves for Spaced Repetition Language Learning (2020)",
+  "url": "https://arxiv.org/abs/2004.11327",
+  "type": "paper",
+  "relevance": "Fits per-learner forgetting curves \u2014 a personalized decay-rate feature capturing how fast a given student loses a skill between turns."
+ },
+ {
+  "title": "The Right Time to Learn: Mechanisms and Optimization of Spaced Learning (Smolen, Zhang & Byrne, 2016)",
+  "url": "https://arxiv.org/abs/1606.08370",
+  "type": "review",
+  "relevance": "Mechanistic account of spacing effects \u2014 justifies nonlinear time-gap transforms (log/exponential) over raw inter-turn intervals as features."
+ },
+ {
+  "title": "Simulated Students in Tutoring Dialogues: Substance or Illusion? (2026)",
+  "url": "https://arxiv.org/abs/2601.04025",
+  "type": "paper",
+  "relevance": "Evaluates whether LLM-simulated learner responses reflect real correctness \u2014 a caution on synthetic-signal reliability directly relevant to our near-noise setting."
+ },
+ {
+  "title": "Decision Tree Modeling of Wheel-Spinning and Productive Persistence in Skill Builders (Baker et al., 2018)",
+  "url": "https://learninganalytics.upenn.edu/ryanbaker/210-Article%20Text-1526-1-18-20180624_V7.pdf",
+  "type": "paper",
+  "relevance": "Detects unproductive struggle from repeated-attempt patterns \u2014 feature idea: recent attempt/error streaks that predict continued failure on the next item."
+ },
+ {
+  "title": "Instruction Based on Self-Explanation (Chi & Wylie / Chi et al. lineage, book chapter)",
+  "url": "https://education.asu.edu/sites/g/files/litvpz656/files/lcl/instruction_based_on_self_explanation.pdf",
+  "type": "review",
+  "relevance": "Self-explanation predicts deep learning and misconception repair \u2014 feature idea: presence and quality of student self-explanation/co-construction turns in the transcript."
+ },
+ {
+  "title": "Litman & Silliman \u2014 ITSPOKE: An Intelligent Tutoring Spoken Dialogue System (HLT-NAACL 2004)",
+  "url": "https://aclanthology.org/N04-3002.pdf",
+  "type": "paper",
+  "relevance": "Blueprint pipeline: per student turn, fuse ASR text + acoustic-prosodic + dialogue-history features \u2014 the exact feature stack to reuse for next-answer correctness."
+ },
+ {
+  "title": "Forbes-Riley & Litman \u2014 Annotating Student Emotional States in Spoken Tutoring Dialogues",
+  "url": "https://aclanthology.org/W04-2326.pdf",
+  "type": "paper",
+  "relevance": "Turn-level affect annotation scheme + lexical/acoustic/dialogue features; gives labelable target states (uncertain/frustrated) usable as engineered features."
+ },
+ {
+  "title": "Pon-Barry & Shieber \u2014 Prosodic Manifestations of Confidence and Uncertainty in Spoken Language (Interspeech 2008)",
+  "url": "https://www.isca-archive.org/interspeech_2008/ponbarry08_interspeech.pdf",
+  "type": "paper",
+  "relevance": "Answer-level prosodic markers of confidence (falling vs rising contour, latency, fillers) \u2014 directly map an answer's prosody to likely correctness."
+ },
+ {
+  "title": "Litman, Forbes-Riley et al. \u2014 Prosodic Cues to Disengagement and Uncertainty in Physics Tutorial Dialogues (Interspeech 2012)",
+  "url": "https://www.isca-archive.org/interspeech_2012/litman12_interspeech.pdf",
+  "type": "paper",
+  "relevance": "Separates disengagement from uncertainty via prosody; motivates two distinct feature families rather than one 'affect' signal."
+ },
+ {
+  "title": "Litman et al. \u2014 Spoken Versus Typed Human and Computer Dialogue Tutoring (IJAIED 2006)",
+  "url": "https://people.cs.pitt.edu/~litman/ijaied06.pdf",
+  "type": "paper",
+  "relevance": "Shows disfluency/pause counts differ by modality and correlate with learning \u2014 supports disfluency-rate features on transcribed speech vs typed baselines."
+ },
+ {
+  "title": "Bevan Jones \u2014 The Prosody of Uncertainty for Spoken Dialogue Intelligent Tutoring Systems (thesis)",
+  "url": "https://scholarworks.sjsu.edu/etd_projects/95/",
+  "type": "thesis",
+  "relevance": "End-to-end recipe for extracting and modeling prosodic uncertainty in an ITS; reusable feature-extraction and labeling methodology."
+ },
+ {
+  "title": "Forbes-Riley & Litman \u2014 Improving (Meta)Cognitive Tutoring by Detecting and Responding to Uncertainty (AAAI)",
+  "url": "https://cdn.aaai.org/ocs/860/860-4222-1-PB.pdf",
+  "type": "paper",
+  "relevance": "Defines the (in)correct x (un)certain quadrant; the 'correct-but-uncertain' cell argues correctness alone is noisy \u2014 add a certainty feature to sharpen prediction."
+ },
+ {
+  "title": "Clark & Fox Tree \u2014 Using uh and um in spontaneous speaking (Cognition 2002)",
+  "url": "https://www.columbia.edu/~rmk7/HC/HC_Readings/Clark_Fox.pdf",
+  "type": "paper",
+  "relevance": "Treat 'uh' (minor delay) and 'um' (major delay) as separate features, not one filler count \u2014 um-rate should be the stronger difficulty/uncertainty signal."
+ },
+ {
+  "title": "Clark & Wasow \u2014 Repeating Words in Spontaneous Speech",
+  "url": "https://web.stanford.edu/~clark/1990s/Clark,%20H.H.%20_%20Wasow,%20T.%20_Repeating%20words%20in%20spontaneous%20speaking_%201998.pdf",
+  "type": "paper",
+  "relevance": "Word repeats/restarts index production difficulty; add repetition and self-repair counts as transcript features for planning trouble before an answer."
+ },
+ {
+  "title": "Rohd, et al. \u2014 Fillers in Spoken Language Understanding: Computational and Psycholinguistic Perspectives",
+  "url": "https://arxiv.org/abs/2301.10761",
+  "type": "review",
+  "relevance": "Survey of how to encode fillers for NLP models; guides whether to keep, tag, or mask 'um/uh' tokens when feeding transcripts to a classifier."
+ },
+ {
+  "title": "Barisic et al. \u2014 Cognitive Load Increases Spoken and Gestural Hesitation Frequency (Languages 2023)",
+  "url": "https://www.mdpi.com/2226-471X/8/1/71",
+  "type": "paper",
+  "relevance": "Empirical link hesitation-rate to cognitive load; justifies per-turn hesitation frequency as a load proxy predicting an impending wrong answer."
+ },
+ {
+  "title": "Automatic Disfluency Detection from Untranscribed Speech",
+  "url": "https://arxiv.org/abs/2311.00867",
+  "type": "paper",
+  "relevance": "Lets you compute disfluency-rate features straight from audio even when the transcript is clean/normalized \u2014 recovers a signal often stripped by ASR."
+ },
+ {
+  "title": "What makes a good pause? Investigating the turn-holding effects of fillers",
+  "url": "https://arxiv.org/abs/2305.02101",
+  "type": "paper",
+  "relevance": "Distinguishes turn-holding vs hesitation pauses; feature idea: pause duration x position (mid-answer vs turn-final) rather than raw silence totals."
+ },
+ {
+  "title": "Integrating Pause Information with Word Embeddings in Language Models (AD detection)",
+  "url": "https://arxiv.org/abs/2501.06727",
+  "type": "paper",
+  "relevance": "Directly shows how to inject pause tokens/durations into word embeddings for an LM \u2014 a concrete architecture for a prosody-aware transcript model."
+ },
+ {
+  "title": "Goupil et al. \u2014 Listeners' perceptions of certainty and honesty share a common prosodic signature (Nature Communications 2020)",
+  "url": "https://www.nature.com/articles/s41467-020-20649-4",
+  "type": "paper",
+  "relevance": "Identifies the canonical prosodic signature (intonation+loudness+duration) of certainty; a compact, theory-grounded acoustic feature vector to extract."
+ },
+ {
+  "title": "Lubold, Walker & Pon-Barry \u2014 Automated Pitch Convergence Improves Learning in a Social Teachable Robot (AIED 2018)",
+  "url": "http://www.ponbarry.com/papers/Lubold_AIED2018.pdf",
+  "type": "paper",
+  "relevance": "Causal evidence that pitch entrainment aids learning; compute tutor-student pitch/rate convergence over the window as a rapport/engagement feature."
+ },
+ {
+  "title": "Levitan \u2014 Acoustic-Prosodic Entrainment in Human-Human and Human-Computer Dialogue (thesis)",
+  "url": "http://www.cs.columbia.edu/nlp/theses/rivka_levitan.pdf",
+  "type": "thesis",
+  "relevance": "Catalog of concrete entrainment metrics (proximity, convergence, synchrony) with formulas \u2014 ready-to-implement paraverbal alignment features."
+ },
+ {
+  "title": "Predicting affective engagement and mental strain from prosodic speech features (PMC)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12491004/",
+  "type": "paper",
+  "relevance": "Maps prosodic features to engagement and mental strain; supplies a validated prosody-to-engagement regression target for the tutoring setting."
+ },
+ {
+  "title": "Automatic Detection of a Student's Affective States for Intelligent Teaching Systems (PMC)",
+  "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7998267/",
+  "type": "paper",
+  "relevance": "Sensor-free affect detection from interaction logs/dialogue; shows text-only affect features are feasible when audio is unavailable."
+ },
+ {
+  "title": "Utilizing NLP for Automated Assessment of Classroom Discussion",
+  "url": "https://arxiv.org/abs/2306.14918",
+  "type": "paper",
+  "relevance": "Automated discussion-quality scoring from transcripts; yields discourse-quality features (questioning, elaboration) as covariates."
+ },
+ {
+  "title": "Mostow & Duong \u2014 Automated Assessment of Oral Reading Prosody (AIED 2009)",
+  "url": "https://www.cs.cmu.edu/~listen/pdfs/AIED2009-expressiveness-final.pdf",
+  "type": "paper",
+  "relevance": "Correlate a student's pitch/intensity/pause/word-duration contour against a fluent template; contour-similarity score predicts comprehension gains."
+ },
+ {
+  "title": "Chen et al. \u2014 Automated Scoring of Nonnative Speech Using SpeechRater v5.0 (ETS, open access)",
+  "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/ets2.12198",
+  "type": "paper",
+  "relevance": "Production-grade catalog of fluency/prosody/pronunciation features from spoken responses \u2014 an off-the-shelf feature dictionary to mine transcripts+audio."
+ },
+ {
+  "title": "A Survey of Deep Learning-Based Multimodal Emotion Recognition: Speech, Text, and Face (Entropy 2023)",
+  "url": "https://www.mdpi.com/1099-4300/25/10/1440",
+  "type": "review",
+  "relevance": "Names extraction toolkits (openSMILE, COVAREP) and fusion architectures for combining acoustic+text emotion features into the model."
+ },
+ {
+  "title": "The BEA 2023 Shared Task on Generating AI Teacher Responses in Educational Dialogues",
+  "url": "https://arxiv.org/abs/2306.06941",
+  "type": "paper",
+  "relevance": "Benchmark + metrics for tutor-response quality; supplies evaluation axes and baselines you can repurpose as response-quality features."
+ },
+ {
+  "title": "Improving Interpretability of Deep Sequential KT with Question-centric Cognitive Representations (QIKT)",
+  "url": "https://arxiv.org/abs/2302.06885",
+  "type": "paper",
+  "relevance": "Fine-grained, question-sensitive KC mastery estimates; suggests per-question cognitive-representation features rather than a single scalar ability."
+ },
+ {
+  "title": "Is ChatGPT a Good Teacher Coach? Zero-Shot Scoring of Classroom Instruction (Wang & Demszky, BEA 2023)",
+  "url": "https://arxiv.org/abs/2306.03090",
+  "type": "paper",
+  "relevance": "LLM zero-shot scoring of transcript segments against observation rubrics; a cheap way to generate instructional-quality features per segment."
+ },
+ {
+  "title": "Edu-ConvoKit: An Open-Source Library for Education Conversation Data",
+  "url": "https://arxiv.org/abs/2402.05111",
+  "type": "paper",
+  "relevance": "Ready tooling to compute talk-time, question rate, uptake, and talk-move features from transcripts; practical feature-extraction backbone."
+ },
+ {
+  "title": "Automated Evaluation of Classroom Instructional Support with LLMs and BoWs",
+  "url": "https://arxiv.org/abs/2310.01132",
+  "type": "paper",
+  "relevance": "Connects global instructional-support prediction to specific utterances; hybrid BoW+LLM features that are interpretable and cheap for near-noise settings."
+ },
+ {
+  "title": "Stepwise Verification and Remediation of Student Reasoning Errors with LLM Tutors",
+  "url": "https://arxiv.org/abs/2407.09136",
+  "type": "paper",
+  "relevance": "Per-step verification of student reasoning; a running 'error detected at step k' signal that anticipates failure on the next assessment item."
+ },
+ {
+  "title": "Self-Explanation of Worked Examples Integrated in an Intelligent Tutoring System",
+  "url": "https://files.eric.ed.gov/fulltext/ED623402.pdf",
+  "type": "paper",
+  "relevance": "Shows eliciting (high-quality) self-explanation drives gains; feature: count/quality of student self-explanation and self-evaluation turns in the transcript."
+ },
+ {
+  "title": "What Impacts Should We Expect from Tutoring at Scale? Exploring Meta-Analytic Generalizability (Kraft, Schueler & Falken, 2024)",
+  "url": "https://edworkingpapers.com/sites/default/files/Tutoring%20Meta-Analysis%20Oct%202024_unblinded.pdf",
+  "type": "review",
+  "relevance": "Effect sizes shrink sharply with scale/target-equivalence -> calibrate expectations for a near-noise task and regularize the model's baseline learning-gain prior."
+ },
+ {
+  "title": "Educational Outcomes of Tutoring: A Meta-analysis of Findings (Cohen, Kulik & Kulik, 1982)",
+  "url": "https://www.semanticscholar.org/paper/Educational-Outcomes-of-Tutoring:-A-Meta-analysis-Cohen-Kulik/6bbc8c9d207b7dc039e9b07189587d44856febf0",
+  "type": "review",
+  "relevance": "Domain-specific gaps (math d=0.60 vs reading d=0.29) argue for subject-interaction features or separate per-domain correctness models."
+ },
+ {
+  "title": "A Meta-Analysis of the Effectiveness of Intelligent Tutoring Systems on K-12 Students' Mathematical Learning (Steenbergen-Hu & Cooper, 2013)",
+  "url": "https://eric.ed.gov/?id=EJ1054449",
+  "type": "review",
+  "relevance": "Grade/subject moderators specific to math ITS -> grade-band and math-topic moderators for math next-item correctness prediction."
+ },
+ {
+  "title": "Effectiveness of Mastery Learning Programs: A Meta-Analysis (Kulik, Kulik & Bangert-Drowns, 1990)",
+  "url": "https://www.uky.edu/~gmswan3/575/kulik_kulik_Bangert-Drowns_1990.pdf",
+  "type": "review",
+  "relevance": "Gains largest for weaker students (d=0.61) -> interaction feature prior-ability x amount-of-mastery-practice in the session."
+ },
+ {
+  "title": "A Blueprint for Scaling Tutoring and Mentoring Across Public Schools (Kraft & Falken, 2021)",
+  "url": "https://edworkingpapers.com/sites/default/files/ai20-335.pdf",
+  "type": "paper",
+  "relevance": "Names the design levers (dosage, small group, tutor continuity, relationship) -> session-structure features: group size, cadence, same-tutor-continuity flag."
+ },
+ {
+  "title": "Design Principles for Accelerating Student Learning with High-Impact Tutoring (EdResearch for Action, 2024)",
+  "url": "https://edresearchforaction.org/research-briefs/design-principles-for-accelerating-student-learning-with-high-impact-tutoring/",
+  "type": "review",
+  "relevance": "Curriculum-aligned, data-informed tutoring -> feature: alignment between the session's covered KCs and the upcoming assessment's KCs."
+ },
+ {
+  "title": "One to One Tuition - Teaching and Learning Toolkit (Education Endowment Foundation)",
+  "url": "https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit/one-to-one-tuition",
+  "type": "review",
+  "relevance": "Group size (1:1 vs 2-3) moderates impact -> simple format indicator feature (one-to-one vs small-group) with 'smaller = better' prior."
+ },
+ {
+  "title": "Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge (Corbett & Anderson, 1995)",
+  "url": "https://perso.liris.cnrs.fr/pierre-antoine.champin/2014/m2iade-ia2/slides/_static/893CorbettAnderson1995.pdf",
+  "type": "paper",
+  "relevance": "BKT HMM with prior/learn/slip/guess -> the canonical baseline: per-KC latent mastery probability is the primary predictor of next-item correctness."
+ },
+ {
+  "title": "Eliciting Self-Explanations Improves Understanding (Chi, de Leeuw, Chiu & LaVancher, 1994)",
+  "url": "http://chilab.asu.edu/papers/ChideLeeuwChiuLaVancher.pdf",
+  "type": "paper",
+  "relevance": "Student-generated self-explanations predict understanding gains -> feature: count/quality of student self-explanation utterances in the transcript."
+ },
+ {
+  "title": "The Power of Feedback (Hattie & Timperley, 2007)",
+  "url": "https://simvilledev.ku.edu/sites/default/files/PD%20Resources/Hattie%20power%20of%20feedback[1].pdf",
+  "type": "review",
+  "relevance": "Feedback operates at task/process/self-regulation/self levels with different efficacy -> categorize each tutor feedback turn by level as a predictor."
+ },
+ {
+  "title": "Test-Enhanced Learning: Taking Memory Tests Improves Long-Term Retention (Roediger & Karpicke, 2006)",
+  "url": "http://psychnet.wustl.edu/memory/wp-content/uploads/2018/04/Roediger-Karpicke-2006_PsychSci.pdf",
+  "type": "paper",
+  "relevance": "Retrieval/testing effect -> feature: number of prior retrieval attempts and prior successful retrievals of the target KC in the session."
+ },
+ {
+  "title": "Exploring the Assistance Dilemma in Experiments with Cognitive Tutors (Koedinger & Aleven, 2007)",
+  "url": "https://pact.cs.cmu.edu/pubs/Koedinger%20Aleven%2007.pdf",
+  "type": "review",
+  "relevance": "Help amount/timing tradeoff and bottom-out-hint abuse -> features: hint depth used, help-requested-before-attempt, bottom-out-hint rate."
+ }
+]

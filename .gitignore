@@ -1,0 +1,19 @@
+.venv/
+data/
+crawl/
+solution/cache/
+__pycache__/
+*.pyc
+
+# secrets — MUST NOT be committed (DeepSeek API key)
+key.txt
+
+# big originals that exceed GitHub's 100MB limit — committed as 45MB split parts
+# instead (submission_container.zip.part-*; rebuild via reassemble_container.sh).
+submission.zip
+submission_container.zip
+# bundled model assets (big, regenerable)
+submission/assets/
+
+# macOS
+.DS_Store
