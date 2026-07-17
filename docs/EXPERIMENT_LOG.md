@@ -27,6 +27,7 @@ reverses" framing was WRONG — transfer is *attenuated (~40% eff), not reversed
 | id-1022 | same model, more shrinkage | 0.12 | 0.6200 | #27 | ❌ over-shrunk |
 | id-1570 | **same model, NO shrink** (July-14 test of "ship unshrunk") | 1.0 | 0.6151 | — | ❌ slightly worse than a=0.4 |
 | **id-1575** | same model, **a=0.68 + recenter to 0.685** (`p→0.685+0.68(p−0.7025)`) | 0.68 | **0.6091** | **#18** | ✅ **new best; #27→#18, −0.0053, pure calibration** |
+| id-1579 | container ModernBERT ensemble; **transformer FELL BACK** (runtime error, ~11min run), prior pivot 0.7025→0.7136 | 0.68 | **0.6087** | #18 | ✅ tiny calibration gain; DL unrealized (needs debugging — the top-5 lever) |
 
 **Calibration curve — now 3 anchors, and my "ship unshrunk" call was WRONG.** a=0.12→0.6200,
 **a=0.4→0.6144 (best)**, a=1.0→0.6151. The minimum is **between a≈0.4 and 0.6, NOT at 1.0**.

@@ -2,6 +2,18 @@
 
 Synthesized from **317 ideas** extracted across **290 harvested sources** (16-cluster harvest + 21-agent deep-read + synthesis). Each item is transcript-computable for predicting next-answer correctness. Sources in [`papers/`](papers/) & [`papers2/`](papers2/); raw list in [`harvest_sources.json`](harvest_sources.json); catalog in [`INSIGHTS_catalog.json`](INSIGHTS_catalog.json).
 
+> **Status: this catalog has been mined and is effectively EXHAUSTED as a source of new
+> *hand-built features*.** The high-value, feature-mappable ideas were tested: the
+> behavioral/talk-move ones (revoicing, pressing-for-reasoning, eliciting, self-explanation)
+> **helped** and are shipped; a later batch of "dynamics" features and a lexical
+> correctness-proxy **did not transfer** (they land in the noise on this near-noise task).
+> The recurring KT/correctness-trajectory theme (theme #1 below) is real but a *shallow*
+> model can't exploit it — it needs a sequence/semantic model (see
+> [../docs/MODEL_ARCHITECTURE.md](../docs/MODEL_ARCHITECTURE.md)). For a reviewer, the useful
+> remaining direction from this literature is **objective-conditional / order-aware modeling
+> via the transformer**, not more scalar features. See
+> [../docs/REVIEW_GUIDE.md](../docs/REVIEW_GUIDE.md).
+
 ## Recurring themes
 
 - Reconstruct a per-attempt correctness proxy from the tutor's confirm-vs-correct reaction to each student answer, then derive recency/streak/two-count/latent-mastery features from that sequence. This is the single most-recurring idea across the corpus (DKT, PFA, BKT, RPFA, Scarlatos KT-in-dialogue all reduce to it) and the closest label-free analogue of the target.

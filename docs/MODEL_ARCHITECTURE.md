@@ -4,6 +4,21 @@
 the literature insights, and what other AI model types could leverage them more —
 to compete with or combine with.*
 
+> **⚠️ Update (reconciled with later results — read this).** New reader? The fast overview
+> is [REVIEW_GUIDE.md](REVIEW_GUIDE.md) (current best: log loss 0.6087, #18). This analysis
+> predates two important findings; its core thesis holds but two recommendations are superseded:
+> 1. **The "LLM-as-extractor" (rec #2 below) was subsequently tested to a *frontier* model
+>    (DeepSeek) and produced NO robust signal — it is a dead end.** See
+>    [LLM_EXTRACTOR.md](LLM_EXTRACTOR.md). Do not pursue it.
+> 2. **The transformer-ensemble thesis is CONFIRMED by the leaderboard, not just CV:** 9 of
+>    ~50 teams reach AUROC ≥ 0.62 (a findable transformer representation), and it's the only
+>    path to top 5. But the built ModernBERT container has **not yet successfully trained on
+>    the real hardware** (it fell back to classical — a runtime issue to debug), so its gain
+>    is unrealized. See [CONTAINER_TRAINER.md](CONTAINER_TRAINER.md).
+>
+> The rest — "shallow model is a bottleneck for sequential/semantic signal; combine, don't
+> replace" — remains the right framing.
+
 ## TL;DR
 My current best model is **TF-IDF + gradient boosting / logistic regression** — a
 **shallow, bag-of-features** learner. Tonight produced **direct empirical evidence

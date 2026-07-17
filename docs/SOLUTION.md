@@ -5,6 +5,20 @@ every engineered feature, the models, the validation strategy, the runtime
 compliance of the submission, and the browser automation used to download the
 data and submit. It is intended to be self-contained and reproducible.
 
+> **Status / two corrections to keep in mind while reading (this doc is the deep
+> methodology reference; the fast overview is [REVIEW_GUIDE.md](REVIEW_GUIDE.md)):**
+> - **Current best: public log loss 0.6087, rank #18** (this doc's feature/model
+>   descriptions are current; the numbers in older prose may lag).
+> - **Learning-objective target-encoding (§3.3) is DISABLED in the shipped model** — it is
+>   leakage (huge in random CV, zero on *unseen* objectives, and it scored *worse* on the
+>   leaderboard). The code remains as a `use_lo_target_enc` option (default `False`).
+> - **A calibration step was added** after this doc was first written: the blended
+>   probability is affinely recentered onto the estimated test base rate,
+>   `p_final = 0.685 + 0.68·(p_raw − 0.7025)`, in `model.py:predict_pipeline` — this is what
+>   took the score from 0.6144 to 0.6091. See [RESULTS_AND_STRATEGY.md](RESULTS_AND_STRATEGY.md).
+> - **Validation groups by `learning_objective_id`** (the test holds out objectives), not by
+>   session; and CV over-estimates the leaderboard because of the train→test shift.
+
 ---
 
 ## 1. Competition specification
