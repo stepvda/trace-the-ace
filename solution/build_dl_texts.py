@@ -23,6 +23,10 @@ def main(n_words=DEFAULT_N_WORDS):
         "text": texts,
         "y": labs.loc[feats.response_id, "is_correct"].values,
         "learning_objective_id": feats.learning_objective_id.astype(str).values,
+        # session_id is REQUIRED: dl_train.py groups its val split by session to avoid
+        # the sibling leak (same-session rows share a transcript). Without it the builder
+        # is stale and dl_train silently falls back to objective-grouped val.
+        "session_id": feats.session_id.astype(str).values,
     })
     out = os.path.join(ASSETS, "train_texts.parquet")
     df.to_parquet(out)

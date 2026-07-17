@@ -96,7 +96,16 @@ def main():
             vy = res["val_y"].astype(float)
             vdl = np.asarray(res["val_prob"], float)
             vcls = oof.reindex(res["val_ids"])["p_classical"].values
-            ok = ~np.isnan(vcls); vy, vdl, vcls = vy[ok], vdl[ok], vcls[ok]
+            # Gate/weight on HELD-OUT-OBJECTIVE val rows only — that matches the test
+            # regime (unseen objectives); the sibling rows whose objective IS in train
+            # would reward objective memorization. Fall back to all rows if too few.
+            keep = ~np.isnan(vcls)
+            vo = res.get("val_valobj")
+            if vo is not None and len(vo) == len(keep):
+                k2 = keep & np.asarray(vo, bool)
+                if k2.sum() >= 100:
+                    keep = k2
+            vy, vdl, vcls = vy[keep], vdl[keep], vcls[keep]
             n = len(vy); rng = np.random.RandomState(0); perm = rng.permutation(n)
             cix, gix = perm[:n // 2], perm[n // 2:]            # disjoint calib / gate halves
 
