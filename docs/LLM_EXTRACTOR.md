@@ -73,14 +73,27 @@ we could bundle, so if its verdict carries no robust signal, none will. It doesn
   seeds the gain is +0.0006 ± 0.0021** (range −0.0029…+0.0036, positive in only 40%)
   — statistically **zero**.
 
-**Why the thesis failed here.** (1) The task is near-noise — the field sits within
-0.008 log loss of the constant baseline, so there is very little extractable signal
-to begin with. (2) Whatever "who did the reasoning" signal exists is **already
-captured** by the classical model's literature-grounded talk-move / self-explanation
-/ uncertainty features — exactly the earlier finding that the v3 *lexical* in-session
-correctness proxy also added nothing. (3) The inverted sign is a faint hint of a real
-"productive-struggle / desirable-difficulty" effect (students who visibly struggle
-learn more), but it is far too weak and noisy to exploit.
+**Why the *zero-shot verdict* failed here.** (1) On the *log-loss metric* the field is
+near-noise (it spans ~0.02 log loss), so the bar for a *calibration* gain is tiny —
+but the real headroom is in **discrimination** (AUROC), and a single distilled 3-way
+verdict is far too coarse to move it. (2) Whatever "who did the reasoning" signal a
+*zero-shot* read can surface is **already captured** by the classical model's
+literature-grounded talk-move / self-explanation / uncertainty features — exactly the
+earlier finding that the v3 *lexical* in-session correctness proxy also added nothing.
+(3) The inverted sign is a faint hint of a real "productive-struggle / desirable-
+difficulty" effect (students who visibly struggle learn more), but it is far too weak
+and noisy to exploit *as a hand-labelled verdict*.
+
+**Scope note — this does NOT mean the transcript is signal-exhausted (correction,
+2026-07-18).** The null above is specific to the **zero-shot verdict** framing. A later
+experiment — a **supervised fine-tuned encoder** (ModernBERT over the focused
+objective-centered representation) — extracts materially *more* discrimination than the
+classical model: objective-grouped OOF AUROC ≈ **0.674 vs classical 0.645** (~0.63
+LB-equivalent vs classical 0.604). So the transcript plainly holds discrimination the
+classical features miss; what fails is asking a *frozen* LLM to name it in one word,
+not the premise that extra signal exists. (The transformer story — including the
+long-hidden sdpa-NaN bug that made it look like there was no signal — lives in
+`EXPERIMENT_LOG.md` / `MODEL_ARCHITECTURE.md`.)
 
 ### Methodology lesson this surfaced (now baked into `llm_stack`)
 A **single-seed** objective-grouped OOF gain on small near-noise data has std ~0.002,
@@ -95,10 +108,12 @@ DeepSeek→reject @40%). This is a durable guard for any future stacked feature.
   objective-grouped) → wire `llm_verdict_vllm` + `llm_stack` into
   `main_container.py`, bundle that model (or the smallest that reproduces the gain),
   smoke-test, ship for July 14.
-- **7B and frontier both null** → the classical already captures the extractable
-  transcript signal (consistent with the earlier v3 lexical "in-session correctness
-  proxy," which also hurt). Record as a definitive negative; do **not** ship a
-  model-bloating step that adds no value. Honest > shippable.
+- **7B and frontier both null** → the classical already captures whatever transcript
+  signal a *zero-shot verdict* can surface (consistent with the earlier v3 lexical
+  "in-session correctness proxy," which also hurt). Record as a definitive negative
+  **for this framing**; do **not** ship a model-bloating step that adds no value.
+  Honest > shippable. (A *supervised* fine-tuned model is out of scope for this rule —
+  see the closing note.)
 
 ## Container integration (built, gated on a positive result)
 Bundling plan if it fires: pre-build `train_prompts.parquet` (session→prompt, small)
@@ -107,3 +122,22 @@ test (consistency), then `llm_stack` fits the meta on `[classical_oof, verdict]`
 self-gates on an objective-grouped split. Disk on the 8 GB M1 (≈10-12 GB free) rules
 out a 7B fp16; a 3B fp16 (~6 GB) or a 7B-AWQ 4-bit (~5 GB) fits after reclaiming the
 container zip + Ollama cache. Bundle the *same* model validated, for honest parity.
+
+*(This plan never fired — the result was negative. It is also now superseded on the
+architecture side: the solution has moved to **pre-train-and-bundle finished weights,
+inference-only container**, so any LLM step would ship as validated bundled weights
+rather than be computed inside the container at submission time.)*
+
+## LLM-*extractor* (this doc, dead) vs LLM-*classifier* (a different, still-open idea)
+This doc is a **definitive negative for the zero-shot LLM-*extractor*** — a *frozen*
+instruct LLM emitting a discrete MASTERED/PARTIAL/CONFUSED verdict that we stack onto
+the classical model. That approach adds no robust signal and is not shipped.
+
+It is **not** a verdict on using an LLM at all. A distinct, still-open idea (Fable's
+Phase-3 moonshot) is an **LLM-*classifier***: a decoder (e.g. QLoRA-fine-tuned
+Qwen2.5-7B) trained **directly on the labels** over the same **focused objective-
+centered representation** that the fine-tuned encoder already uses successfully. That
+is supervised, not zero-shot — the model *learns* the mapping from transcript to
+next-question success rather than being asked to name it — so it is not refuted by the
+zero-shot null here. It is gated behind the encoder work and only pursued if a strong
+transformer base is confirmed (see `RESULTS_AND_STRATEGY.md` / `EXPERIMENT_LOG.md`).

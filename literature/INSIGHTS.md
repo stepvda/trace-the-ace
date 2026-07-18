@@ -2,9 +2,10 @@
 
 Synthesized from **317 ideas** extracted across **290 harvested sources** (16-cluster harvest + 21-agent deep-read + synthesis). Each item is transcript-computable for predicting next-answer correctness. Sources in [`papers/`](papers/) & [`papers2/`](papers2/); raw list in [`harvest_sources.json`](harvest_sources.json); catalog in [`INSIGHTS_catalog.json`](INSIGHTS_catalog.json).
 
-> **Status: this catalog has been mined and is effectively EXHAUSTED as a source of new
-> *hand-built features*.** The high-value, feature-mappable ideas were tested: the
-> behavioral/talk-move ones (revoicing, pressing-for-reasoning, eliciting, self-explanation)
+> **Status: as a source of new *hand-built scalar features* this catalog is mined out — but
+> its top structural recommendation (order-aware modeling) has now been VALIDATED and is the
+> primary OPEN lever, not a closed one.** The high-value, feature-mappable ideas were tested:
+> the behavioral/talk-move ones (revoicing, pressing-for-reasoning, eliciting, self-explanation)
 > **helped** and are shipped; a later batch of "dynamics" features and a lexical
 > correctness-proxy **did not transfer** (they land in the noise on this near-noise task).
 > The recurring KT/correctness-trajectory theme (theme #1 below) is real but a *shallow*
@@ -13,6 +14,21 @@ Synthesized from **317 ideas** extracted across **290 harvested sources** (16-cl
 > remaining direction from this literature is **objective-conditional / order-aware modeling
 > via the transformer**, not more scalar features. See
 > [../docs/REVIEW_GUIDE.md](../docs/REVIEW_GUIDE.md).
+>
+> **Update (2026-07-18) — the transformer that was meant to exploit theme #1 had never
+> actually trained.** ModernBERT under `attn_implementation="sdpa"` emits **NaN logits on
+> padded batches** (it hid because unpadded/equal-length smoke batches are fine), so the
+> container's trainer silently fell back to **classical every run** for the whole competition.
+> Fixing it (flash-attention) makes the real ModernBERT-base train with finite, decreasing
+> loss: on an objective-grouped holdout the **focused objective-centered representation**
+> reaches **AUROC ≈ 0.674 (≈ 0.63 LB-equivalent after the ~0.04 grouped-CV optimism haircut)**
+> vs the classical **LB AUROC 0.604 / OOF 0.6446** — a large, real discrimination gain. So the
+> literature's steer toward objective-conditional / order-aware modeling is **vindicated, not
+> exhausted**: the scalar-feature seam is closed, the transformer seam is now the primary lever.
+> (Full-context 8192 was decisively rejected — mean-pooling over ~5k mostly-irrelevant tokens
+> drowns the signal — which retro-validates the "selection over coverage" principle behind the
+> focused representation.) Note: **all public-LB points to date remain classical-only**; the
+> fixed transformer is not yet submitted.
 
 ## Recurring themes
 
@@ -66,7 +82,14 @@ Synthesized from **317 ideas** extracted across **290 harvested sources** (16-cl
 | 30 | leakage_safe_prefix_and_grouped_cv | medium | structural | candidate | Build every feature for predicting item t from a strict prefix (turns strictly before the assessment) and audit that no feature reads the answer turn or later t… |
 | 31 | exp_decay_recency_and_reliability_gate | low | structural | candidate | For any per-turn scalar x_i (uncertainty, affirmation, latency, valence) compute a soft decayed aggregate sum(w_i*x_i)/sum(w_i) with w_i=exp(-lambda*(t_last - t… |
 | 32 | sbert_semantic_embeddings | medium | sequence-model | candidate | Embed each turn with a frozen sentence encoder; aggregate the last-k student turns and (separately) tutor turns by element-wise mean/std/min/max pooling into a … |
-| 33 | llm_simulated_student_and_rubric | high | llm | candidate | Prompt a frozen instruction-tuned LLM with the role-tagged transcript prefix plus the upcoming question, asking it to role-play the student and emit either an a… |
+| 33 | llm_simulated_student_and_rubric | high | llm | **zero-shot: DEAD-END; QLoRA classifier: OPEN** | Prompt a frozen instruction-tuned LLM with the role-tagged transcript prefix plus the upcoming question, asking it to role-play the student and emit either an a… |
+
+> **Note on #33 (LLM path).** Two distinct ideas hide under this row. (a) The *zero-shot
+> extractor* — a **frozen** LLM emitting verdicts / P(next correct) / rubric scores — was tested
+> and is a **dead end** on this near-noise task. (b) A **QLoRA decoder-LLM classifier**
+> fine-tuned on the labels over the **focused objective-centered representation** (e.g.
+> Qwen2.5-7B) is a *different*, still-open idea — the Phase-3 #1-contention diversity play,
+> gated on a strong transformer base first. Do not conflate the two.
 
 ## Implemented this pass (v3), measured objective-grouped
 - In-session **correctness proxy** (#1) + recency/streak/PFA stats — `proxy_last` corr with target = **0.137** (strongest single feature).

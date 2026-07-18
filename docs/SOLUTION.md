@@ -86,7 +86,9 @@ submission_format_smoke.csv      100 rows  (smoke = subset of training)
 
 ### 2.3 EDA findings
 - **Label base rate 0.7025** (24,637 correct / 10,435 incorrect). Constant-mean
-  prediction gives log loss **0.60876** — the number any real model must beat.
+  prediction gives log loss **0.60876** on the *train* rate. NOTE: this is a train-set
+  quantity and was **never observed on the LB** — the true test-constant is ≈**0.6236**
+  (test base rate ≈0.685). Keep 0.60876 only as a CV reference, not "the bar to beat."
 - **398** distinct learning objectives (id ↔ text is 1:1). Counts are very
   skewed: median 9 samples/objective, max 1,373; 159 objectives have ≥20.
 - Sessions are **long**: ~264 utterances each on average (max 469 in sample).
@@ -314,10 +316,66 @@ python automation/submit_code.py submission.zip normal    # scored submission
 
 ## 11. Limitations & future work
 - Multi-objective sessions share one transcript, so within-session responses get
-  identical structural features; segmenting the transcript per objective could add
-  signal.
+  identical structural features; segmenting the transcript per objective adds
+  signal. This idea is now realized in the transformer leg's **objective-centered
+  representation** (see §12).
 - The pedagogical lexicons are hand-built and English/TSL-specific; learned
   representations (e.g. bundled sentence embeddings, allowed offline) could
   generalize better.
-- Only shallow models are used for portability; the A100 permits bundling a small
-  transformer for the transcripts if higher accuracy is needed.
+- The blended LR + HGB stack above is the **only leg that has ever scored on the
+  leaderboard**; every LB number in this doc (incl. 0.6087 / #18) is
+  **classical-only**. A transformer leg is under active development (§12) but is
+  **not yet submitted**.
+
+## 12. Transformer leg (ModernBERT) — under development, not yet submitted
+
+> Everything below is in-progress work on a **separate model leg**, tracked in
+> [RESULTS_AND_STRATEGY.md](RESULTS_AND_STRATEGY.md). It has contributed **nothing**
+> to the public LB to date; the classical stack (§§3–10) is what ships today.
+
+The task's remaining gap is **discrimination**, not calibration (classical OOF
+AUROC ≈ 0.604; #1 ≈ 0.63). A fine-tuned transformer over the transcript is the
+lever for that gap.
+
+- **The critical bug — the transformer never actually trained.** ModernBERT with
+  `attn_implementation="sdpa"` emits **NaN logits on padded batches** (both bf16 and
+  fp32; unpadded/equal-length batches are fine, so it passed smoke tests). ModernBERT
+  is designed for **flash-attention** (which unpads); its SDPA fallback is broken for
+  padding. The old container trainer (`solution/dl_train.py`) tried `sdpa` first, trained
+  on NaN, and **silently fell back to the classical prediction every run** — so the
+  "transformer leg" had contributed **zero** for the entire competition (the
+  long-unexplained id-1579 fallback).
+- **The fix** is `attn_implementation="flash_attention_2"` (see `solution/gpu_mbert.py`,
+  `solution/gpu_dapt.py`, `solution/verify_flash.py`); padded batches now train with
+  finite, decreasing loss. Once fixed, the model is strong: a 3-arm A/B on real
+  ModernBERT-base (objective-grouped holdout, 10k subset, 3 epochs) gave the
+  objective-centered "control" rep **AUROC 0.6737** vs the classical OOF baseline
+  0.6446. Objective-grouped CV over-estimates the LB by ~0.04, so control ≈ **0.63
+  LB-equivalent** — a large, real discrimination gain.
+- **Representation: selection over coverage (settled).** The **objective-centered
+  representation** — a focused window around the assessed objective's turns
+  (`solution/dl_common.py`, `RELEVANT_WORDS`/`RECENT_WORDS`, optional additive
+  `HISTORY_WORDS`) — decisively beats highlighting the **whole** 8192-token transcript
+  (`full_context` mode: −0.11 AUROC, 3.6× slower, flat learning curve). ModernBERT
+  mean-pools, so pooling over ~5k mostly-irrelevant tokens drowns the signal; the
+  focused window is a hand-built attention prior the model can't cheaply relearn.
+- **Architecture: pre-train-and-bundle → inference-only container.** In-container
+  fine-tuning at submission time is **superseded**: it was a no-local-GPU workaround
+  and the thing that hid the silent NaN failure. The new design fine-tunes on a
+  **rented GPU** (RunPod RTX 4090), validates the **exact shipped weights** on local OOF,
+  bundles them into `assets/`, and the container runs **inference only** — removing the
+  6 h training ceiling and the silent-failure class. Container guards: a pinned
+  flash-attn wheel plus a coded **batch-size-1 sdpa fallback** (batch 1 = no padding = no
+  NaN), and the classical leg kept as a last-resort fallback; the built zip is
+  offline-smoke-tested (`HF_HUB_OFFLINE=1`) before upload.
+- **Note on DAPT:** domain-adaptive pretraining was only ever applied to a local
+  **DistilBERT proxy** (`cache/distilbert_adapted`), never the encoder that ships (stock
+  **ModernBERT-base**). DAPT on the transcript corpus (`solution/gpu_dapt.py`) is now
+  being evaluated over the full-35k OOF (`solution/gpu_oof.py`, `solution/blend_gate.py`).
+- **Ship gate (OOF, full 35k, objective-grouped):** the blended (transformer +
+  classical) OOF must beat classical AUROC by **≥ 0.015** *and* the calibrated log loss
+  by **≥ 0.002** before a transformer submission is spent.
+- **Related dead-end vs still-open idea:** a zero-shot LLM *extractor* (verdicts from a
+  frozen model) was a dead end and stays retired; a QLoRA decoder *classifier*
+  fine-tuned on the labels over the focused representation is a **different, still-open**
+  moonshot idea, not yet attempted.

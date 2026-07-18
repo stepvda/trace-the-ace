@@ -34,7 +34,8 @@ def run(texts, y, tr, va, max_len, batch, epochs, seed):
         per_device_train_batch_size=batch, per_device_eval_batch_size=16,
         gradient_accumulation_steps=2, learning_rate=1.5e-5, num_train_epochs=epochs,
         eval_strategy="no", save_strategy="no", logging_steps=250, report_to=[],
-        warmup_ratio=0.1, weight_decay=0.01, seed=seed, dataloader_num_workers=0)
+        warmup_ratio=0.1, weight_decay=0.01, seed=seed, dataloader_num_workers=0,
+        disable_tqdm=True)   # no \r progress-bar spam: keeps the log small + readable
     trainer = Trainer(model=model, args=args, train_dataset=DS(tr))
     trainer.train()
     pred = trainer.predict(DS(va))

@@ -60,11 +60,16 @@ things that help in cross-validation do **not** help on the leaderboard.
 - **No learning-objective target-encoding** (it is leakage — see §5).
 - **Leaderboard AUROC ≈ 0.604.**
 
-**Container ensemble (built, fallback-safe, `submission/main_container.py`):** the
-classical model **plus** a ModernBERT transformer fine-tuned in-container on the A100,
-blended by a self-gating weight, with the classical model as fallback. Its last run
-**fell back to classical** (the transformer errored — see §6), so its potential is
-unrealized. This is the leading open opportunity.
+**Transformer leg — under active rebuild (2026-07-18).** A ModernBERT container ensemble
+*was* built to fine-tune in-container on the A100 and blend with the classical model by a
+self-gating weight. It has **never contributed anything**: ModernBERT's `sdpa` attention
+emits **NaN logits on padded batches**, so every in-container run trained on NaN and
+**silently fell back to classical** (the long-unexplained id-1579 fallback — see §6).
+**Every leaderboard point to date is therefore classical-only.** The bug is now fixed
+(**flash-attention**, which unpads) and, once fixed, the transformer is *strong* (§6). The
+design has accordingly pivoted away from in-container training: **pre-fine-tune on a rented
+GPU, OOF-gate the exact weights, bundle them, and ship an inference-only container.** This
+is the leading open opportunity — now de-risked, but **not yet submitted.**
 
 **Reproduce:** `pip install -r requirements-lock.txt`; training/feature code in
 `solution/`; `python automation/package.py classical|container` builds the zip;
@@ -114,10 +119,12 @@ understanding why is important context:
   0.6091, i.e. **#27 → #18 with no new features**, and confirmed the 0.685 rate on the
   real test.
 - **Where the remaining gap to #1 lives:** #1 (0.6013) extracts ~0.022 "nats" of
-  information from the transcript; this model extracts ~0.014 (≈65%). Roughly **half of
-  our original gap to #1 was calibration (now recovered); the other half is
-  DISCRIMINATION** — a better transcript representation we don't yet have. That is the
-  target for new ideas (§6).
+  information from the transcript; the classical model extracts ~0.014 (≈65%). Roughly
+  **half of our original gap to #1 was calibration (now recovered); the other half is
+  DISCRIMINATION.** As of 2026-07-18 we finally *have* a stronger representation: the
+  now-fixed ModernBERT (§6) scores **AUROC 0.6737 on objective-grouped CV (≈0.63
+  LB-equivalent vs classical 0.604)** — a large, real discrimination gain. It is **not yet
+  submitted**; realizing it on the leaderboard is the target for new ideas (§6).
 
 ---
 
@@ -130,10 +137,10 @@ Each of these was tested and is a dead end *for a specific, evidenced reason*. D
 |---|---|---|
 | **Learning-objective target-encoding** / per-objective difficulty as a feature | ❌ dead | Leakage: huge in random/session CV, **zero on unseen objectives**. On the leaderboard it scored *worse* (0.6224 vs 0.6144). Test objectives are effectively unseen. |
 | **Objective-text → difficulty** (semantic/embedding difficulty of the objective description) | ❌ dead | Objective text does not predict its difficulty (corr 0.047); doesn't transfer to unseen objectives. |
-| **LLM-as-extractor** (an instruct LLM reads the transcript and rates the student's mastery) | ❌ dead | Tested up to a **frontier model** (DeepSeek): the verdict was near-zero / slightly *anti*-correlated and added no robust signal over the classical model. |
+| **LLM-as-extractor** (a *zero-shot* instruct LLM reads the transcript and rates the student's mastery) | ❌ dead | Tested up to a **frontier model** (DeepSeek): the verdict was near-zero / slightly *anti*-correlated and added no robust signal over the classical model. **Note:** this kills the *zero-shot extractor* only — an LLM **classifier** (a decoder *fine-tuned on the labels* over the objective-centered rep, e.g. QLoRA Qwen2.5-7B) is a **different, still-open** idea (§6). |
 | **External Eedi data** (bundle Eedi's own public response data for difficulty priors) | ❌ dead | Every public Eedi dataset is **non-commercially licensed**; the competition requires external data under a commercial-OK license. |
 | **Transductive / test-time adaptation** (refit TF-IDF on train+test, recenter on the test mean, importance-weighting using test features, BBSE label-shift) | ❌ **rule-illegal** | Competition rules require each test sample be processed **independently** — no feature parameters fitted across test samples, no test-set aggregates. (BBSE was also empirically useless here.) |
-| **More hand-built behavioral features** (a 33-idea literature catalog; 9 "dynamics" features; a lexical in-session-correctness proxy) | ❌ exhausted | The 64-feature set already captures the extractable transcript signal; extra behavioral features land in the noise (confirmed three independent times). |
+| **More hand-built behavioral features** (a 33-idea literature catalog; 9 "dynamics" features; a lexical in-session-correctness proxy) | ❌ exhausted | The 64-feature set captures the extractable **hand-built** transcript signal; extra behavioral features land in the noise (confirmed three independent times). **This is NOT signal exhaustion** — the flash-attn-fixed transformer extracts substantial *additional* discrimination (§6). |
 | **KT / GRU sequence model over per-turn features** | ⚪ neutral | Works but adds ~nothing over the classical (a small model on 8 GB can't beat the tuned classical). |
 | **Heavier shrinkage toward the prior** | ❌ | Log loss is convex in shrink; the optimum is ~0.68, not heavy shrink. |
 
@@ -146,24 +153,33 @@ Each of these was tested and is a dead end *for a specific, evidenced reason*. D
 
 Ranked by the project's current best guess at (impact × plausibility).
 
-1. **Get the transformer working (the top-5 lever).** The leaderboard proves a good
+1. **Land the now-working transformer (the top-5 lever).** The leaderboard proves a good
    transcript representation exists and is *findable*: **9 of ~50 teams have AUROC ≥ 0.62,
    two of them on a single submission.** With this project's calibration edge (those teams
    are mostly *badly* calibrated), AUROC 0.615–0.622 would map to **0.606–0.604 → top 5**.
-   A ModernBERT container ensemble is built but its last run fell back (the transformer
-   errored — likely a `transformers`/ModernBERT runtime issue in the container; it has
-   never successfully trained on the real hardware). **Concrete questions:** best
-   transformer/approach for long tutoring transcripts under distribution shift? How to
-   make an in-container fine-tune robust and validate it with only free smoke tests? Is a
-   frozen-embedding + linear head more transfer-robust than fine-tuning?
+   **As of 2026-07-18 this is de-risked, not blue-sky.** The "it never trained" mystery was
+   **ModernBERT's `sdpa` attention emitting NaN on padded batches**, so every container run
+   silently fell back to classical (it hid in equal-length smoke tests). Fixed with
+   **flash-attention**, the real ModernBERT-base on the focused objective-centered
+   representation scores **AUROC 0.6737** (objective-grouped CV; ≈0.63 LB-equivalent). The
+   design has pivoted off in-container fine-tuning: **pre-fine-tune on a rented GPU,
+   OOF-gate the exact weights against the classical baseline, bundle them, and ship an
+   inference-only container** (flash-attn wheel + a batch-1 sdpa fallback + classical
+   last-resort). **Open questions:** best ensemble/seed and blend strategy; does DAPT on
+   the transcript corpus help the *stock* encoder that ships (only a DistilBERT proxy was
+   ever adapted); will the ~0.04 CV-over-LB gap hold on the real test; is ModernBERT-large
+   or a QLoRA decoder-classifier worth the extra compute?
 
-2. **Objective-conditional representation (a genuine blind spot).** The pipeline computes
-   **one feature set per session**, but 59% of rows are **multi-objective sessions** where
-   nothing distinguishes *which* objective is being asked about — and within such sessions
-   the model's ranking is coin-flip (AUROC ≈ 0.49). Features that are functions of
-   `(transcript, objective text)` — e.g. how much of the transcript is *about* the queried
-   objective, or an objective-centered transcript window fed to the transformer — could
-   add discrimination and, being identity-free, should transfer to unseen objectives.
+2. **Objective-conditional representation (now partly addressed by the transformer).** The
+   *classical* pipeline still computes **one feature set per session**, but 59% of rows are
+   **multi-objective sessions** where nothing distinguishes *which* objective is asked
+   about — and within such sessions its ranking is coin-flip (AUROC ≈ 0.49). The fixed
+   transformer attacks this directly: its input is an **objective-centered transcript
+   window** — a hand-built attention prior. Whole-transcript (8192-token) input was
+   **decisively rejected** (−0.11 AUROC, 3.6× slower; mean-pooling over ~5k mostly
+   irrelevant tokens drowns the signal), retro-validating **"selection over coverage."**
+   Bringing the same objective-conditioning into the *classical* features remains open and,
+   being identity-free, should transfer to unseen objectives.
 
 3. **Fix and re-run the measurement instrument.** The objective-grouped CV has a **sibling
    leak** (multi-objective sessions put identical-feature rows in both train and val
@@ -184,8 +200,11 @@ Ranked by the project's current best guess at (impact × plausibility).
   **forbids all transductive tricks** — a common source of "clever" but illegal ideas.
 - **External data** must be publicly available under a license that permits commercial use
   (rules out the obvious Eedi datasets).
-- **Compute:** development machine is an 8 GB M1 (no CUDA) — can't fine-tune transformers
-  locally; the only GPU is the offline A100 in the 6-hour submission container.
+- **Compute:** development machine is an 8 GB M1 (no CUDA) — it can't fine-tune, or even
+  run a decision-grade transformer A/B, locally. Transformer training now happens on a
+  **rented RunPod GPU (RTX 4090 24 GB)**; the submission **container runs inference only**.
+  (The old design fine-tuned in-container under the A100 6-hour budget — that is retired: it
+  is exactly what hid the silent NaN failure. The A100 is still available for inference.)
 - **Metric is log loss**, so calibration matters as much as ranking.
 - **Local CV over-estimates the leaderboard** (§3) — treat any local-only gain skeptically;
   the leaderboard (3/week, best-kept) is the only ground truth.
@@ -196,7 +215,7 @@ Ranked by the project's current best guess at (impact × plausibility).
 - `docs/EXPERIMENT_LOG.md` — every measure tried, with its measured helped/hurt effect.
 - `docs/RESULTS_AND_STRATEGY.md` — the leaderboard journey and calibration analysis.
 - `docs/MODEL_ARCHITECTURE.md` — shallow vs. sequence/semantic model analysis.
-- `docs/CONTAINER_TRAINER.md` — the A100 ModernBERT ensemble and its fixes.
+- `docs/CONTAINER_TRAINER.md` — the transformer leg: the sdpa-NaN root cause and the pivot to a bundled, inference-only container.
 - `docs/LLM_EXTRACTOR.md` — the (negative) LLM-as-extractor investigation, in full.
 - `docs/SOLUTION.md` — detailed methodology, features, and data schema.
 - `literature/` — a catalog of ~33 ideas synthesized from ~290 tutoring/education papers.

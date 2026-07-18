@@ -10,11 +10,19 @@ to compete with or combine with.*
 > 1. **The "LLM-as-extractor" (rec #2 below) was subsequently tested to a *frontier* model
 >    (DeepSeek) and produced NO robust signal — it is a dead end.** See
 >    [LLM_EXTRACTOR.md](LLM_EXTRACTOR.md). Do not pursue it.
-> 2. **The transformer-ensemble thesis is CONFIRMED by the leaderboard, not just CV:** 9 of
->    ~50 teams reach AUROC ≥ 0.62 (a findable transformer representation), and it's the only
->    path to top 5. But the built ModernBERT container has **not yet successfully trained on
->    the real hardware** (it fell back to classical — a runtime issue to debug), so its gain
->    is unrealized. See [CONTAINER_TRAINER.md](CONTAINER_TRAINER.md).
+> 2. **The transformer-ensemble thesis is CONFIRMED — now on real hardware, not just the
+>    leaderboard.** The leaderboard already implied it (9 of ~50 teams reach AUROC ≥ 0.62 — a
+>    findable transformer representation — and it's the only path to top 5). The "runtime issue"
+>    that made the container fall back to classical is now diagnosed: ModernBERT under
+>    `attn_implementation="sdpa"` emits **NaN logits on padded batches**, so every container run
+>    silently trained on NaN and reverted to classical. The transformer leg has therefore
+>    contributed **zero** to date; **all LB points are classical-only.** With the fix
+>    (**flash-attention**, which unpads) the real ModernBERT-base trains and is **strong**:
+>    objective-grouped CV AUROC **0.6737** (focused rep) vs classical OOF **0.6446** — ≈ **0.63
+>    LB-equivalent vs classical 0.604**, a large discrimination gain. It is **not yet submitted.**
+>    The design also pivoted to **pre-train-and-bundle → inference-only** (weights fine-tuned on a
+>    rented GPU, bundled; the container runs inference only). See
+>    [CONTAINER_TRAINER.md](CONTAINER_TRAINER.md).
 >
 > The rest — "shallow model is a bottleneck for sequential/semantic signal; combine, don't
 > replace" — remains the right framing.
@@ -58,10 +66,10 @@ correct") can't tell these apart — which is partly why v3 failed. Only a model
 ## Model types that would leverage the insights MORE
 | Model type | Why it fits the insights | Evidence / status | Risk |
 |---|---|---|---|
-| **Transformer over raw dialogue** (ModernBERT/BERT) | Reads turns *in order* → captures talk-moves-in-context, in-session correctness, reasoning quality *implicitly*; domain-adaptable on tutoring corpora | **Validated**: +0.0088 AUC from MathDial adaptation; decorrelated from classical | Overfits/transfer risk; needs GPU (A100 container) |
+| **Transformer over raw dialogue** (ModernBERT/BERT) | Reads turns *in order* → captures talk-moves-in-context, in-session correctness, reasoning quality *implicitly*; domain-adaptable on tutoring corpora | **Strongly validated**: real ModernBERT-base scores objective-grouped CV AUROC **0.6737** (focused rep) vs classical OOF **0.6446** (≈0.63 LB-equiv vs 0.604); decorrelated from classical | Needs GPU (rented 4090). **Requires flash-attention** — sdpa NaNs on padded batches; 8192-token full-context is rejected (OOMs the budget, drowns signal in mean-pooling) |
 | **Knowledge-Tracing sequence model (DKT/AKT)** | *Purpose-built* for "predict next-correct from a sequence of attempts"; models the mastery **trajectory** the shallow model can't | Not yet built; catalog's most-recurring theme | Needs reliable per-turn labels; in-session attempts are sparse/noisy here |
 | **Hierarchical utterance→session encoder** | Encode each utterance (move + content) → attention over utterance embeddings → local moves *and* global trajectory; efficient on long transcripts | Not built | More engineering |
-| **LLM-as-extractor / judge** (vLLM on the A100) | Rates *reasoning quality* & *semantic* in-session correctness — exactly the "Correct-Answer Trap" gap that sank the lexical proxy | Not built; runtime *has* vLLM | Cost/calibration; unvalidatable locally |
+| **LLM-as-extractor / judge** | Rates *reasoning quality* & *semantic* in-session correctness — exactly the "Correct-Answer Trap" gap that sank the lexical proxy | **Dead end** as an *extractor*: zero-shot verdicts tested to a frontier model (DeepSeek), no robust signal ([LLM_EXTRACTOR.md](LLM_EXTRACTOR.md)). NB — an LLM-*classifier* (QLoRA decoder fine-tuned on labels over the focused rep) is a **different, still-open** Phase-3 idea | Cost/calibration; unvalidatable locally |
 | Graph/relational over dialogue moves | Models references/contingency as edges | Exotic | Low ROI now |
 
 ## Compete or combine?
@@ -72,10 +80,12 @@ correct") can't tell these apart — which is partly why v3 failed. Only a model
   shallow model cannot.
 
 Two ways to combine (both recommended):
-1. **Ensemble** (weighted by held-out performance) — already implemented in the
-   A100 container-trainer (classical + ModernBERT, weight chosen on an
-   objective-grouped hold-out, classical fallback). My data shows the transformer
-   is **decorrelated**, so this is a genuine robustness+accuracy gain.
+1. **Ensemble** (weighted by held-out performance) — classical + ModernBERT, weight
+   chosen on an objective-grouped hold-out, with a classical fallback. The container
+   *design* existed but the transformer leg never trained (sdpa-NaN → classical every
+   run); it is being rebuilt as **pre-trained, bundled weights in an inference-only
+   container** (a 5–6-seed ensemble across the focused + additive-history reps). My data
+   shows the transformer is **decorrelated**, so this is a genuine robustness+accuracy gain.
 2. **Deep model as a *feature generator* for the shallow model** — e.g., an
    LLM-extracted "understanding score" or a KT "mastery estimate" becomes **one
    semantic feature** in the classical model. This is the fix for why v3 failed:
@@ -84,11 +94,15 @@ Two ways to combine (both recommended):
    of the LLM.
 
 ## Recommendation (ranked, for the next window)
-1. **Scale the transformer+classical ensemble** (container-trainer, A100) — the
-   only validated "better model type"; already built.
-2. **LLM-as-extractor** for a semantic in-session-correctness / reasoning-quality
-   score → feed as a feature *and* ensemble. Directly targets the insight that beat
-   the lexical proxy. Needs the A100/vLLM; validate via free smoke tests.
+1. **Ship the transformer+classical ensemble** — the only validated "better model
+   type," now unblocked by the flash-attention fix. Pre-fine-tune ModernBERT-base on a
+   rented GPU (5–6 seeds, focused + additive-history reps), OOF-gate it, and bundle the
+   finished weights into an **inference-only** container. *Not* "already built" — the prior
+   in-container trainer never actually trained the transformer (sdpa-NaN → classical).
+2. ~~**LLM-as-extractor**~~ — **dead end** (zero-shot extraction produced no robust signal
+   even at frontier scale; see [LLM_EXTRACTOR.md](LLM_EXTRACTOR.md)). The still-open variant
+   is an LLM-**classifier** (QLoRA decoder fine-tuned on the labels over the focused rep) — a
+   Phase-3 diversity bet, gated on confirming a strong transformer base first.
 3. **KT-style attention model** over a per-turn feature sequence (talk-move +
    engagement + proxy) predicting next-correct — the most elegant match to the
    target; a research bet requiring reliable per-turn features.

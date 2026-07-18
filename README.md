@@ -33,10 +33,23 @@ Two submission artifacts:
   (`p → 0.685 + 0.68·(p − 0.7025)`). Entrypoint `submission/main.py`. **This is the 0.6087
   model.**
 - **`submission_container.zip`** (≈700 MB, committed as 45 MB split parts — rebuild with
-  `./reassemble_container.sh`) — **A100 container-trainer**: fine-tunes ModernBERT
-  in-container and ensembles it with the classical model, self-gated by a held-out split,
-  with a classical fallback. Entrypoint `submission/main_container.py`. Its last run fell
-  back to classical (transformer runtime issue); see **[docs/CONTAINER_TRAINER.md](docs/CONTAINER_TRAINER.md)**.
+  `./reassemble_container.sh`) — the **in-container ModernBERT trainer** (old design):
+  fine-tunes ModernBERT at submission time and ensembles it with the classical model,
+  self-gated with a classical fallback. Entrypoint `submission/main_container.py`.
+  **Now known to have scored classical-only on every run:** ModernBERT's `sdpa` attention
+  emits NaN logits on *padded* batches, so the transformer trained on NaN and the gate
+  silently fell back to classical each time — the transformer leg has contributed **zero**
+  for the whole competition. This design is being **replaced** (see below); root-cause
+  writeup in **[docs/CONTAINER_TRAINER.md](docs/CONTAINER_TRAINER.md)**.
+
+**Transformer leg (in development, not yet submitted).** Fixing the attention bug
+(`attn_implementation="flash_attention_2"`) makes ModernBERT-base train properly, and it is
+*strong*: on an objective-grouped holdout it reaches ~**0.63 LB-equivalent AUROC** vs the
+classical **0.604** — a real discrimination gain on a task where #1 ≈ 0.63. The design has
+pivoted from fine-tuning *inside* the container to **pre-fine-tuning on a rented GPU and
+bundling the finished weights into an inference-only container** (validated on local OOF
+before upload, with a batch-size-1 SDPA fallback and a classical last-resort). This is
+OOF-gated and unsubmitted, so **every leaderboard point to date is classical-only.**
 
 ## Approach
 
@@ -68,7 +81,9 @@ data/                         competition data (git-ignored — not in repo)
 solution/
   features.py                 feature engineering (train + inference)
   model.py                    fit_pipeline / predict_pipeline + calibration
-  dl_common.py, dl_train.py   in-container transformer texts + fine-tune
+  dl_common.py                transformer text/representation builder (focused rep + history)
+  gpu_*.py, blend_gate.py     rented-GPU ModernBERT harness (A/B, DAPT, 5-fold OOF, ship-gate)
+  dl_train.py                 old in-container trainer (being replaced by bundled inference)
   *.py                        experiment scripts (shift_proxy, transfer_ablation, ...)
 submission/
   main.py                     classical inference entrypoint (the 0.6087 model)
@@ -89,7 +104,7 @@ pip install -r requirements-lock.txt
 # feature/CV/train code lives in solution/ (data must be downloaded into data/ first)
 python automation/package.py classical            # -> submission_classical.zip
 python automation/test_submission_local.py 800    # end-to-end local runtime check (fallback path)
-python automation/package.py container            # -> submission_container.zip (A100 ensemble)
+python automation/package.py container            # -> submission_container.zip (old in-container design)
 ```
 
 ## Docs
