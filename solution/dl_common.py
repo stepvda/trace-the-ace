@@ -70,17 +70,34 @@ def _last_words(lines, n_words):
     return " ".join(" ".join(lines).split()[-n_words:])
 
 
+SEG_MODE = "last"   # "last" = last overlapping mention (validated, matches bundled train_texts);
+#                     "best" = densest segment — under A/B evaluation; switch + regen train_texts if it wins
+
+
 def _relevant_segment(turns, obj_terms, n_words, proxy_tags):
-    """Last contiguous run of turns overlapping the objective terms, ± context turns."""
+    """The transcript segment most about the objective, ± context turns. The objective's
+    main discussion is usually EARLY (measured median position 0.14), so 'last' (take the
+    last overlapping mention) often misses it; 'best' takes the contiguous run with the
+    highest TOTAL objective-overlap regardless of position."""
     if not obj_terms:
         return ""
-    hit = [i for i, (_, c) in enumerate(turns) if len(_content_terms(c) & obj_terms) >= MIN_OVERLAP]
+    scores = [len(_content_terms(c) & obj_terms) for _, c in turns]
+    hit = [i for i, s in enumerate(scores) if s >= MIN_OVERLAP]
     if not hit:
         return ""
-    end = start = hit[-1]
-    hitset = set(hit)
-    while start - 1 in hitset:
-        start -= 1
+    if SEG_MODE == "last":
+        end = start = hit[-1]; hs = set(hit)
+        while start - 1 in hs:
+            start -= 1
+    else:  # "best": contiguous hit-run maximizing total overlap
+        runs, s, prev = [], hit[0], hit[0]
+        for i in hit[1:]:
+            if i == prev + 1:
+                prev = i
+            else:
+                runs.append((s, prev)); s = prev = i
+        runs.append((s, prev))
+        start, end = max(runs, key=lambda r: sum(scores[r[0]:r[1] + 1]))
     a, b = max(0, start - CTX_TURNS), min(len(turns), end + CTX_TURNS + 1)
     return _last_words(_tagged_lines(turns[a:b], proxy_tags), n_words)
 
