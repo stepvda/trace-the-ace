@@ -28,8 +28,7 @@ reference only but is diagnostically useful (see §4).
 `P(correct) ≈ 0.70`. Each row = one (session, objective) pair; a session with multiple
 objectives yields multiple rows that **share the same transcript**. Two tutoring
 providers contribute data: **Eedi** (short typed chats) and **Third Space Learning**
-(longer voice-transcribed lessons). Columns: `response_id, session_id,
-learning_objective_id, learning_objective` (+ the transcript CSV per session).
+(longer voice-transcribed lessons). Columns: `response_id, session_id, learning_objective_id, learning_objective` (+ the transcript CSV per session).
 
 **Submission:** *Code execution.* You upload a `submission.zip` (with `main.py` at root)
 that runs **offline in a container** (A100 80 GB GPU + vLLM available, Python 3.12,
@@ -48,6 +47,7 @@ things that help in cross-validation do **not** help on the leaderboard.
 **Best public score: 0.6087, rank #18 / ~429** (was #27 at the start of this work).
 
 **Model (all in `solution/`):**
+
 - **Text:** TF-IDF over three fields — full transcript, student-only turns, and the
   learning-objective text — reduced with TruncatedSVD.
 - **Numeric:** 64 hand-built **behavioral** features (turn structure, response latency,
@@ -133,16 +133,16 @@ understanding why is important context:
 Each of these was tested and is a dead end *for a specific, evidenced reason*. Details in
 `docs/EXPERIMENT_LOG.md` and `docs/LLM_EXTRACTOR.md`.
 
-| Idea | Verdict | Why |
-|---|---|---|
-| **Learning-objective target-encoding** / per-objective difficulty as a feature | ❌ dead | Leakage: huge in random/session CV, **zero on unseen objectives**. On the leaderboard it scored *worse* (0.6224 vs 0.6144). Test objectives are effectively unseen. |
-| **Objective-text → difficulty** (semantic/embedding difficulty of the objective description) | ❌ dead | Objective text does not predict its difficulty (corr 0.047); doesn't transfer to unseen objectives. |
-| **LLM-as-extractor** (a *zero-shot* instruct LLM reads the transcript and rates the student's mastery) | ❌ dead | Tested up to a **frontier model** (DeepSeek): the verdict was near-zero / slightly *anti*-correlated and added no robust signal over the classical model. **Note:** this kills the *zero-shot extractor* only — an LLM **classifier** (a decoder *fine-tuned on the labels* over the objective-centered rep, e.g. QLoRA Qwen2.5-7B) is a **different, still-open** idea (§6). |
-| **External Eedi data** (bundle Eedi's own public response data for difficulty priors) | ❌ dead | Every public Eedi dataset is **non-commercially licensed**; the competition requires external data under a commercial-OK license. |
-| **Transductive / test-time adaptation** (refit TF-IDF on train+test, recenter on the test mean, importance-weighting using test features, BBSE label-shift) | ❌ **rule-illegal** | Competition rules require each test sample be processed **independently** — no feature parameters fitted across test samples, no test-set aggregates. (BBSE was also empirically useless here.) |
-| **More hand-built behavioral features** (a 33-idea literature catalog; 9 "dynamics" features; a lexical in-session-correctness proxy) | ❌ exhausted | The 64-feature set captures the extractable **hand-built** transcript signal; extra behavioral features land in the noise (confirmed three independent times). **This is NOT signal exhaustion** — the flash-attn-fixed transformer extracts substantial *additional* discrimination (§6). |
-| **KT / GRU sequence model over per-turn features** | ⚪ neutral | Works but adds ~nothing over the classical (a small model on 8 GB can't beat the tuned classical). |
-| **Heavier shrinkage toward the prior** | ❌ | Log loss is convex in shrink; the optimum is ~0.68, not heavy shrink. |
+| Idea                                                                                                                                                              | Verdict                  | Why                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Learning-objective target-encoding** / per-objective difficulty as a feature                                                                              | ❌ dead                  | Leakage: huge in random/session CV,**zero on unseen objectives**. On the leaderboard it scored *worse* (0.6224 vs 0.6144). Test objectives are effectively unseen.                                                                                                                                                                                                                                   |
+| **Objective-text → difficulty** (semantic/embedding difficulty of the objective description)                                                               | ❌ dead                  | Objective text does not predict its difficulty (corr 0.047); doesn't transfer to unseen objectives.                                                                                                                                                                                                                                                                                                          |
+| **LLM-as-extractor** (a *zero-shot* instruct LLM reads the transcript and rates the student's mastery)                                                    | ❌ dead                  | Tested up to a**frontier model** (DeepSeek): the verdict was near-zero / slightly *anti*-correlated and added no robust signal over the classical model. **Note:** this kills the *zero-shot extractor* only — an LLM **classifier** (a decoder *fine-tuned on the labels* over the objective-centered rep, e.g. QLoRA Qwen2.5-7B) is a **different, still-open** idea (§6). |
+| **External Eedi data** (bundle Eedi's own public response data for difficulty priors)                                                                       | ❌ dead                  | Every public Eedi dataset is**non-commercially licensed**; the competition requires external data under a commercial-OK license.                                                                                                                                                                                                                                                                       |
+| **Transductive / test-time adaptation** (refit TF-IDF on train+test, recenter on the test mean, importance-weighting using test features, BBSE label-shift) | ❌**rule-illegal** | Competition rules require each test sample be processed**independently** — no feature parameters fitted across test samples, no test-set aggregates. (BBSE was also empirically useless here.)                                                                                                                                                                                                        |
+| **More hand-built behavioral features** (a 33-idea literature catalog; 9 "dynamics" features; a lexical in-session-correctness proxy)                       | ❌ exhausted             | The 64-feature set captures the extractable**hand-built** transcript signal; extra behavioral features land in the noise (confirmed three independent times). **This is NOT signal exhaustion** — the flash-attn-fixed transformer extracts substantial *additional* discrimination (§6).                                                                                                    |
+| **KT / GRU sequence model over per-turn features**                                                                                                          | ⚪ neutral               | Works but adds ~nothing over the classical (a small model on 8 GB can't beat the tuned classical).                                                                                                                                                                                                                                                                                                           |
+| **Heavier shrinkage toward the prior**                                                                                                                      | ❌                       | Log loss is convex in shrink; the optimum is ~0.68, not heavy shrink.                                                                                                                                                                                                                                                                                                                                        |
 
 > Note: some of these "null" verdicts rest on the leaky CV described in §7. A reviewer who
 > wants to challenge one should insist on a **session-AND-objective-grouped** re-test.
@@ -169,7 +169,6 @@ Ranked by the project's current best guess at (impact × plausibility).
    the transcript corpus help the *stock* encoder that ships (only a DistilBERT proxy was
    ever adapted); will the ~0.04 CV-over-LB gap hold on the real test; is ModernBERT-large
    or a QLoRA decoder-classifier worth the extra compute?
-
 2. **Objective-conditional representation (now partly addressed by the transformer).** The
    *classical* pipeline still computes **one feature set per session**, but 59% of rows are
    **multi-objective sessions** where nothing distinguishes *which* objective is asked
@@ -180,12 +179,10 @@ Ranked by the project's current best guess at (impact × plausibility).
    irrelevant tokens drowns the signal), retro-validating **"selection over coverage."**
    Bringing the same objective-conditioning into the *classical* features remains open and,
    being identity-free, should transfer to unseen objectives.
-
 3. **Fix and re-run the measurement instrument.** The objective-grouped CV has a **sibling
    leak** (multi-objective sessions put identical-feature rows in both train and val
    folds). A session-AND-objective-grouped CV would let us honestly re-test the ideas
    currently marked "null" in §5 — some of those verdicts may be artifacts.
-
 4. **Squeeze the last calibration.** Small and mostly done, but: the recenter pivots on
    the train mean (0.7025) while the model's own mean prediction is ~0.7136; a
    train-derived prior fix (~+0.001) is in the container. Per-segment calibration is
@@ -212,6 +209,7 @@ Ranked by the project's current best guess at (impact × plausibility).
 ---
 
 ## 8. Where to read more
+
 - `docs/EXPERIMENT_LOG.md` — every measure tried, with its measured helped/hurt effect.
 - `docs/RESULTS_AND_STRATEGY.md` — the leaderboard journey and calibration analysis.
 - `docs/MODEL_ARCHITECTURE.md` — shallow vs. sequence/semantic model analysis.

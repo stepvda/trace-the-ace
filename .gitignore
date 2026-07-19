@@ -12,6 +12,11 @@ key.txt
 # instead (submission_container.zip.part-*; rebuild via reassemble_container.sh).
 submission.zip
 submission_container.zip
+submission_infer.zip        # 1.16GB inference container — regenerable via automation/package.py infer
+
+# regenerable GPU experiment outputs (OOF / probe parquets at repo root)
+/oof_*.parquet
+/probe_*.parquet
 # bundled model assets (big, regenerable)
 submission/assets/
 

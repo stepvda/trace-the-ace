@@ -25,6 +25,16 @@ def build(mode):
                       (os.path.join(ROOT, "solution", "model.py"), "model.py")]
         asset_files = ["artifacts.pkl"]
         asset_dirs = []
+    elif mode == "infer":
+        # INFERENCE-ONLY container: bundled classical + pre-fine-tuned ModernBERT seeds.
+        # No dl_train.py (no in-container training), no base_model, no train_texts.
+        out = os.path.join(ROOT, "submission_infer.zip")
+        root_files = [(os.path.join(SUB, "main_infer.py"), "main.py"),
+                      (os.path.join(ROOT, "solution", "features.py"), "features.py"),
+                      (os.path.join(ROOT, "solution", "model.py"), "model.py"),
+                      (os.path.join(ROOT, "solution", "dl_common.py"), "dl_common.py")]
+        asset_files = ["artifacts.pkl", "classical_oof.parquet", "blend_config.json"]
+        asset_dirs = ["mbert_seeds"]
     else:
         out = os.path.join(ROOT, "submission_container.zip" if mode == "container" else "submission.zip")
         root_files = [(os.path.join(SUB, "main_container.py"), "main.py"),

@@ -35,6 +35,10 @@ ARMS = {  # (max_len, batch, accum, builder kwargs, full_context) — effective 
     "full":    dict(max_len=8192, batch=4, accum=4, full=True,  kw=dict()),
     "history": dict(max_len=3072, batch=8, accum=2, full=False,
                     kw=dict(HISTORY_WORDS=400, RELEVANT_WORDS=600, RECENT_WORDS=1000)),
+    # ModernBERT-LARGE probe: same 'control' focused rep, smaller batch (2.6x params) -> effective 16.
+    # Run with MBERT_DIR=.../ModernBERT-large. p_ column is 'control_large' (distinct from base 'control').
+    "control_large": dict(max_len=3072, batch=4, accum=4, full=False,
+                          kw=dict(HISTORY_WORDS=0, RELEVANT_WORDS=600, RECENT_WORDS=1000)),
 }
 
 

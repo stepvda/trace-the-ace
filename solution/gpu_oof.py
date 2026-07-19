@@ -32,6 +32,12 @@ def train_predict(rep, texts, y, tr, va, max_len, batch, accum, epochs, seed):
     va_texts = [texts[i] for i in va]
     torch.manual_seed(seed)
     m = load_model().to(device); m.config.use_cache = False
+    if os.environ.get("RESET_HEAD"):
+        # contrastive-init: MBERT_DIR points at the matching model. Reset ONLY the final decision
+        # layer so we measure the pretrained BACKBONE, not a transferred match/no-match boundary.
+        import torch.nn as nn
+        if hasattr(m, "classifier") and isinstance(m.classifier, nn.Linear):
+            m.classifier.reset_parameters()
     m.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
     opt = torch.optim.AdamW(m.parameters(), lr=2e-5, weight_decay=0.01)
     steps = math.ceil(len(tr) / (batch * accum)) * epochs
@@ -67,7 +73,8 @@ def main():
     reps = (sys.argv[1].split(",") if len(sys.argv) > 1 else ["control", "history"])
     epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 2
     out = sys.argv[3] if len(sys.argv) > 3 else "/workspace/oof_transformer.parquet"
-    print(f"=== OOF reps={reps} epochs={epochs} base={BASE} ===", flush=True)
+    seed_base = int(sys.argv[4]) if len(sys.argv) > 4 else 42   # per-fold seed = seed_base + k
+    print(f"=== OOF reps={reps} epochs={epochs} seed_base={seed_base} base={BASE} ===", flush=True)
     f = pd.read_csv(os.path.join(ROOT, "data", "train_features.csv"))
     lab = pd.read_csv(os.path.join(ROOT, "data", "train_labels.csv")).set_index("response_id")
     f["y"] = lab.loc[f.response_id, "is_correct"].values
@@ -85,7 +92,7 @@ def main():
         for rep in reps:
             cfg = ARMS[rep]; ts = time.time()
             vp = train_predict(rep, texts[rep], y, tr, va, cfg["max_len"], cfg["batch"],
-                               cfg["accum"], epochs, seed=42 + k)
+                               cfg["accum"], epochs, seed=seed_base + k)
             oof[rep][va] = vp
             print(f"[fold{k} {rep}] val_auc={roc_auc_score(y[va], vp):.4f} n={len(va)} "
                   f"({int(time.time()-ts)}s, tot {int(time.time()-t0)}s)", flush=True)
